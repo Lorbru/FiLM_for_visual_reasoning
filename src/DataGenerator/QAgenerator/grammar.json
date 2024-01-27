@@ -1,0 +1,78 @@
+{
+    "color": {
+        
+        "red": {
+            "M": "rouge",
+            "F": "rouge",
+            "MP": "rouges",
+            "FP": "rouges"
+        },
+
+        "green": {
+            "M": "vert",
+            "F": "verte",
+            "MP": "verts",
+            "FP": "vertes"
+        },
+
+        "blue": {
+            "M": "bleu",
+            "F": "bleue",
+            "MP": "bleus",
+            "FP": "bleues"
+        },
+
+        "white": {
+            "M": "blanc",
+            "F": "blanche",
+            "MP": "blancs",
+            "FP": "blanches"
+        }
+
+    },
+
+    "shape": {
+
+        "figure": {
+            "genre": "F",
+            "singul":"figure",
+            "plural": "figures",
+            "indet": "de figures"
+        },
+        
+        "triangle": {
+            "genre": "M",
+            "singul":"triangle",
+            "plural": "triangles",
+            "indet": "de triangles"
+        },
+
+        "etoile": {
+            "genre": "F",
+            "singul":"etoile",
+            "plural": "etoiles",
+            "indet": "d'etoiles"
+        },
+
+        "ellipse": {
+            "genre": "F",
+            "singul":"ellipse",
+            "plural": "ellipses",
+            "indet": "d'ellipses"
+        },
+
+        "rectangle": {
+            "genre": "M",
+            "singul":"rectangle",
+            "plural": "rectangles",
+            "indet": "de rectangles"
+        }
+
+    },
+
+    "cardinal": {
+        "M": ["des", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf", "dix"],
+        "F": ["des", "une", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf", "dix"]
+    } 
+
+}
