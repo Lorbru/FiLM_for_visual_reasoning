@@ -12,3 +12,5 @@
   - https://docs.google.com/document/d/1JFMwL9X2WP6BZ0qBabEHP4saA-NtpTx8xeNPdwQxqXU/edit?usp=sharing
 * Lien vers rapport Overleaf :
   - https://www.overleaf.com/2972594869wqghkcczkzgs#df7577
+* Lien video cool:
+  - https://www.youtube.com/watch?v=yK2CAM1GINE&ab_channel=NERSC
