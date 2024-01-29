@@ -8,7 +8,7 @@ class CNN(nn.Module):
     def __init__(self):
 
         # Construction du CNN (analyse de l'image avec introduction de couches FiLM)
-        # TODO
+        print("hello")
         pass
 
     def forward(self, x):
