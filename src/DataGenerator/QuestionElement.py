@@ -5,7 +5,7 @@ class QuestionElement():
     
     def __init__(self, count:int, shape:str, color:str):
 
-        with open('src/DataGenerator/QAgenerator/grammar.json', 'r') as f:
+        with open('src/DataGenerator/json/grammar.json', 'r') as f:
             self.grammar = json.load(f)
         
         self.count = count                       

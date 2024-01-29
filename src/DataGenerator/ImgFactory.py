@@ -1,4 +1,4 @@
-from Shapes import Shapes
+from DataGenerator.Shapes import Shapes
 import numpy as np
 
 class ImgFactory():
