@@ -16,7 +16,8 @@ class CNN(nn.Module):
         #Première convolution
         self.conv1 = nn.Conv2d(self.channels, 128, 3)
         self.pool1 = nn.AdaptiveMaxPool2d((14, 14))
-
+        # 128 images 14*14 
+        
         # Resblocks
         self.resBlock1 = None
         self.resBlock2 = None
