@@ -2,26 +2,17 @@ import numpy as np
 import json
 from QuestionElement import QuestionElement
 from Question import Question
+from LoadData import Data
 
 class QAFactory():
-        
-    with open('src/DataGenerator/json/QA.json', 'r') as f:
-        QAjson = json.load(f)
-        Qlist = [q for q in QAjson]
-
-    Dlist = ["en haut", "en bas", "à droite", "à gauche", "au centre", "en haut à droite", "en haut à gauche",
-                "en bas à droite", "en bas à gauche" ]
-    
-    def __init__(self):
-        return
 
     @staticmethod
     def randomQuestion(qtype=None, dirAlea=None, q1=None, q2=None):
 
         if qtype == None :
-            qtype = np.random.choice(QAFactory.Qlist)
+            qtype = Data.randomQType()
         if dirAlea == None :
-            dirAlea = QAFactory.Dlist[np.random.randint(0, len(QAFactory.Dlist))]
+            dirAlea = Data.randomPosition()
         if q1 == None :
             q1 = QuestionElement.randomElement()
         if q2 == None :
@@ -29,24 +20,17 @@ class QAFactory():
         return Question(qtype, q1, q2, dirAlea)
     
     @staticmethod
-    def randomQuestionAndAnswer(qtype=None):
+    def randomQuestionAndAnswer(qtype=None, dirAlea=None, q1=None, q2=None):
 
         if (qtype==None):      
-            qtype = np.random.choice(QAFactory.Qlist)
+            # on laisse comparaison de côté pour le moment
+            qtype = Data.randomQType(without=['comparaison'])
+        print(f"-------------- {qtype}")
+        answer = np.random.choice(Data.QAjson[qtype])
+        question = QAFactory.randomQuestion(qtype=qtype, dirAlea=dirAlea, q1=q1, q2=q2)
 
-        answer = np.random.choice(QAFactory.QAjson[qtype])
+        # NB : on a traité dans la génération de question le problème d'incompatibilité entre
+        # questions triviales/interdites et certaines réponses
 
-        return (QAFactory.randomQuestion(qtype=qtype), answer)
+        return (question, answer)
 
-
-
-
-
-def test():
-    L = []
-    for k in range(100):
-        q = QAFactory.randomQuestionAndAnswer()
-        print(q)
-        
-
-test()

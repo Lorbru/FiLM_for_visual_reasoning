@@ -6,15 +6,7 @@ import random
 class Shapes():
 
     DIM = 180
-
     TILE_SIZE = DIM/6
-
-    RGB_COLOR_LIST = {
-        "red": [235, 20, 20],
-        "green": [20, 235, 20],
-        "blue": [20, 20, 235],
-        "white" : [235, 235, 235]
-    }
 
     def __init__(self, dim=DIM):
         self.img = Image.new('RGB', (dim, dim), 'black')

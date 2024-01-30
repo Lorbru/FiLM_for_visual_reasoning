@@ -5,28 +5,32 @@
             "M": "rouge",
             "F": "rouge",
             "MP": "rouges",
-            "FP": "rouges"
+            "FP": "rouges",
+            "RGB": [235, 20, 20]
         },
 
         "green": {
             "M": "vert",
             "F": "verte",
             "MP": "verts",
-            "FP": "vertes"
+            "FP": "vertes",
+            "RGB": [20, 235, 20]
         },
 
         "blue": {
             "M": "bleu",
             "F": "bleue",
             "MP": "bleus",
-            "FP": "bleues"
+            "FP": "bleues",
+            "RGB": [20, 20, 235]
         },
 
         "white": {
             "M": "blanc",
             "F": "blanche",
             "MP": "blancs",
-            "FP": "blanches"
+            "FP": "blanches",
+            "RGB": [235, 235, 235]
         }
 
     },
@@ -70,9 +74,7 @@
 
     },
 
-    "cardinal": {
-        "M": ["des", "un", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf", "dix"],
-        "F": ["des", "une", "deux", "trois", "quatre", "cinq", "six", "sept", "huit", "neuf", "dix"]
-    } 
+    "position": ["en haut a gauche", "en haut", "en haut a droite", "a gauche", "au centre", "a droite", "en bas a gauche",
+    "en bas", "en bas a droite" ]
 
 }
