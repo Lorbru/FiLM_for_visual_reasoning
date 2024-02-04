@@ -25,7 +25,7 @@ class QAFactory():
         if (qtype==None):      
             # on laisse comparaison de côté pour le moment
             qtype = Data.randomQType(without=['comparaison'])
-        print(f"-------------- {qtype}")
+        # print(f"-------------- {qtype}")
         answer = np.random.choice(Data.QAjson[qtype])
         question = QAFactory.randomQuestion(qtype=qtype, dirAlea=dirAlea, q1=q1, q2=q2)
 

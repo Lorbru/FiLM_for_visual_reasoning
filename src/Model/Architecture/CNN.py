@@ -1,25 +1,28 @@
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import torch.optim as optim 
+import torch.optim as optim
+import torchvision
+
 from ResBlock import ResBlock
 from torchvision import transforms
 from PIL import Image
 
-class CNN(nn.Module):
 
+
+
+class CNN(nn.Module):
     DEFAULT_CHANNELS_RESBLOCK = 128
     DEFAULT_POOLING_SIZE = 14
 
-    def __init__(self, img_size, nb_channels, output_size, dcr = DEFAULT_CHANNELS_RESBLOCK, dps = DEFAULT_POOLING_SIZE):
-
+    def __init__(self, img_size, nb_channels, output_size, dcr=DEFAULT_CHANNELS_RESBLOCK, dps=DEFAULT_POOLING_SIZE):
         super().__init__()
         # Construction du CNN (analyse de l'image avec introduction de couches FiLM)
         self.imgSize = img_size
         self.channels = nb_channels
         self.outSize = output_size
 
-        #Première convolution
+        # Première convolution
         self.conv1 = nn.Conv2d(self.channels, dcr, 3)
         self.pool1 = nn.AdaptiveMaxPool2d((dps, dps))
         # 128 images 14*14 
@@ -40,14 +43,12 @@ class CNN(nn.Module):
         self.classif_out = nn.Linear(1024, output_size)
         self.activation_out = nn.Softmax(dim=1)
 
-
         # 100352
 
     def forward(self, x):
-
         # Prediction du modèle
         x = self.conv1(x)
-        x = self.pool1(x) 
+        x = self.pool1(x)
 
         x = self.resBlock1(x)
         x = self.resBlock2(x)
@@ -62,12 +63,11 @@ class CNN(nn.Module):
         x = self.classif_l2(x)
         x = self.activation(x)
         return self.activation_out(self.classif_out(x))
-    
-def test():
 
+
+def test():
     # Définissez le chemin de votre image
     image_path = 'src/Data/Img33/img0.png'
-
 
     # Définissez les transformations à appliquer à l'image
     transform = transforms.Compose([
@@ -91,4 +91,4 @@ def test():
     print("je suis passé ici")
     print(y)
 
-test()
+

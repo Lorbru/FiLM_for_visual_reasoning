@@ -170,4 +170,4 @@ def test():
         print(a)
         img.saveToPNG(f"src/Data/DataGen/test{k}.png")
 
-test()
+# test()

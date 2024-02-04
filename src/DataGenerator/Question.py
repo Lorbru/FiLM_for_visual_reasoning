@@ -3,6 +3,7 @@ import json
 import numpy as np
 from LoadData import Data
 
+
 class Question():
         
     def __init__(self, type, mainObject:QuestionElement, secondObject:QuestionElement=None, direction=None):
@@ -11,7 +12,7 @@ class Question():
         # type 1 : (Présence) Y a t-il [...] sur l'image => (Oui/Non)
         # type 2 : (Comptage) Combien y a t-il [...] sur l'image => (int)
         # type 3 : (Comparaison) Y a t-il plus [...] que [...] sur l'image ? => (Oui/Non)
-        # type 4 : (Direction) Quelle est la figure la plus à (droite/gauche/haut/bas) => (Ellipse, Rectangle, Etoile, Triangle)
+        # type 4 : (Position) Quelle est la figure la plus à (droite/gauche/haut/bas) => (Ellipse, Rectangle, Etoile, Triangle)
 
         # [...] représente une liste de propriétés sur un objet de la scène (classe SceneObject) : on en conserve deux pour les questions de type 3 :
         
