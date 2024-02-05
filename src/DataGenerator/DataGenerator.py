@@ -13,7 +13,6 @@ class DataGenerator():
         self.imgFactory = ImgFactory()
         self.qaFactory = QAFactory()
     
-
     def buildImageFromQA(self, question=None):
 
         if question == None :
@@ -169,5 +168,7 @@ def test():
         print(q)
         print(a)
         img.saveToPNG(f"src/Data/DataGen/test{k}.png")
+
+        # vérifier cohérence entre k-ième print de question/réponse avec k-ième image de Data/DataGen
 
 test()
