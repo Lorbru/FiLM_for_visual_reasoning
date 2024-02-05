@@ -5,7 +5,6 @@ import sys
 import json
 
 from DataGenerator import DataGenerator
-from Dataset import Dataset
 from QAFactory import QAFactory
 from Model.Architecture.CNN import CNN
 from torchvision import transforms
