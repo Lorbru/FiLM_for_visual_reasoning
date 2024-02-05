@@ -5,35 +5,35 @@ import sys
 import json
 
 from DataGenerator import DataGenerator
+from Dataset import Dataset
 from QAFactory import QAFactory
 from Model.Architecture.CNN import CNN
 from torchvision import transforms
 
 
-def first_CNN(archi=CNN, img_size=180, input_shape=3, output_shape=16, device="cpu", n_images=500, n_epochs=10, lr=0.01):
+def first_CNN(archi=CNN, img_size=180, input_shape=3, output_shape=16, device="cpu", n_images=500, n_epochs=10, lr=0.01, batch_size = 256):
 
     transform = transforms.Compose([
         transforms.ToTensor(),
         transforms.Normalize((.5, .5, .5), (.5, .5, .5))
     ])
 
-    batch_size = 32
+
     with open('src/DataGenerator/json/LabelsMaps.json', 'r') as f:
         labelsMaps = json.load(f)
 
     labelsInv = dict(zip(labelsMaps.values(), labelsMaps.keys()))
 
-    TrainLoader = []
+    dataset = []
     question = QAFactory.randomQuestion(qtype="position", dirAlea="au centre")
     for i in range(n_images):
         DataGen = DataGenerator()
         _, answer, img = DataGen.buildImageFromQA(question)
-        print(answer,int(labelsInv[answer]))
         answer = torch.tensor([int(labelsInv[answer])])
-        img.saveToPNG("src/Data/DataGen/"+str(i)+".png")
         img = transform(img.img)
-        img = img.unsqueeze(0)
-        TrainLoader += [(img, answer)]
+        dataset += [(img, answer)]
+
+    TrainLoader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=True, num_workers=2)
 
     print("====== IMAGES GENEREES ======")
 
@@ -46,7 +46,7 @@ def first_CNN(archi=CNN, img_size=180, input_shape=3, output_shape=16, device="c
     for epoch in range(n_epochs):
         running_loss = 0.0
         for i, (x, y) in enumerate(TrainLoader):
-            inputs, labels = x.to(device), y.to(device)
+            inputs, labels = x.to(device), y.to(device).squeeze(1)
 
             # zero the parameter gradients
             optimizer.zero_grad()
@@ -66,8 +66,10 @@ def main():
 
     print("====== RUNNING PROJECT ======")
 
-    print(torch.cuda.is_available())
-    mod = first_CNN(n_epochs=5, n_images=2000, output_shape=4)
+    if torch.cuda.is_available() :
+        mod = first_CNN(n_epochs=5, n_images=10, output_shape=4, device='cuda')
+    else:
+        mod = first_CNN(n_epochs=5, n_images=10, output_shape=4)
 
     transform = transforms.Compose([
         transforms.ToTensor(),
@@ -85,14 +87,13 @@ def main():
         DataGen = DataGenerator()
         _, answer, img = DataGen.buildImageFromQA(question)
         print(answer, int(labelsInv[answer]))
-        # answer = torch.tensor([int(labelsInv[answer])])
-        # img.saveToPNG("src/Data/DataGen/T0.png")
         img = transform(img.img)
         img = img.unsqueeze(0)
 
         output = mod(img)
-        # print(output)
         print(output.argmax())
+
+        torch.save(mod.state_dict(), "src/Data/mod0.pth")
 
 
 
