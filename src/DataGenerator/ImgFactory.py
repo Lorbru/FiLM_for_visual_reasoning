@@ -1,5 +1,5 @@
-from Shapes import Shapes
-from LoadData import Data
+from .LoadData import Data
+from .Shapes import Shapes
 import numpy as np
 
 class ImgFactory():

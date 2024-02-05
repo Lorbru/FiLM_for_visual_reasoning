@@ -1,10 +1,10 @@
 import random
-from ImgFactory import ImgFactory
-from Question import Question
-from QAFactory import QAFactory
+from .ImgFactory import ImgFactory
+from .Question import Question
+from .QAFactory import QAFactory
 import numpy as np
 from PIL import Image
-from LoadData import Data
+from .LoadData import Data
 
 class DataGenerator():
 
@@ -13,7 +13,6 @@ class DataGenerator():
         self.imgFactory = ImgFactory()
         self.qaFactory = QAFactory()
     
-
     def buildImageFromQA(self, question=None):
 
         if question == None :
@@ -158,16 +157,3 @@ class DataGenerator():
 
 
 
-
-def test():
-
-    Generator = DataGenerator()
-
-    for k in range(10):
-        
-        q, a, img = Generator.buildImageFromQA()
-        print(q)
-        print(a)
-        img.saveToPNG(f"src/Data/DataGen/test{k}.png")
-
-# test()
