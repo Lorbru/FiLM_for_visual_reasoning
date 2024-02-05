@@ -14,3 +14,5 @@
   - https://www.overleaf.com/2972594869wqghkcczkzgs#df7577
 * Lien video cool:
   - https://www.youtube.com/watch?v=yK2CAM1GINE&ab_channel=NERSC
+
+![alt text](https://pbs.twimg.com/media/D6sImswXYAA4dXP.jpg)
