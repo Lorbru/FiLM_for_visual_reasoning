@@ -1,5 +1,5 @@
-from .LoadData import Data
-from .Shapes import Shapes
+from LoadData import Data
+from Shapes import Shapes
 import numpy as np
 
 class ImgFactory():
@@ -60,5 +60,30 @@ class ImgFactory():
                     randomImg.drawStar(x, y, dx, dy, np.random.randint(5, 7), alea_rot, alea_color, False)
                 elif(fig == 1):
                     randomImg.drawTriangle(x, y, dx, dy, rotation=alea_rot, random_noise=True, clr=alea_color)
+
+        return randomImg
+
+    @staticmethod
+    def drawUniqueRandomFigure(dim):
+        fig = Data.randomFigure(without=["figure"])
+        alea_color = Data.randomColor()
+        return ImgFactory.drawUniqueFigure(fig, alea_color, dim)
+        
+    @staticmethod
+    def drawUniqueFigure(fig, color, dim):
+
+        randomImg = Shapes(dim) 
+        alea_rot = 360 * np.random.rand()
+        dx, dy = np.array([dim//2, dim//2]) * (0.5 + np.random.rand(2)/2)
+        x, y = dx//2, dy//2
+        alea_color = Data.ObjData["color"][color]["RGB"]
+        if (fig == "ellipse"):
+            randomImg.drawEllipse(x, y, .75*dx, .75*dy, alea_rot, color)
+        elif(fig == "rectangle"):
+            randomImg.drawRect(x, y, .75*dx, .75*dy, alea_rot, color)
+        elif(fig == "etoile"):
+            randomImg.drawStar(x, y, dx, dy, np.random.randint(5, 7), alea_rot, color, False)
+        elif(fig == "triangle"):
+            randomImg.drawTriangle(x, y, dx, dy, rotation=alea_rot, random_noise=True, clr=color)
 
         return randomImg

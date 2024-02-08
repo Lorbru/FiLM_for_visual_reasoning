@@ -1,5 +1,5 @@
 import numpy as np
-from .LoadData import Data
+from LoadData import Data
 
 class QuestionElement():
     

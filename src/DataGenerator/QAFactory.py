@@ -1,8 +1,8 @@
 import numpy as np
 import json
-from .QuestionElement import QuestionElement
-from .Question import Question
-from .LoadData import Data
+from QuestionElement import QuestionElement
+from Question import Question
+from LoadData import Data
 
 class QAFactory():
 

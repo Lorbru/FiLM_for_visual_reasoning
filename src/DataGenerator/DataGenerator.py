@@ -1,10 +1,10 @@
 import random
-from .ImgFactory import ImgFactory
-from .Question import Question
-from .QAFactory import QAFactory
+from ImgFactory import ImgFactory
+from Question import Question
+from QAFactory import QAFactory
 import numpy as np
 from PIL import Image
-from .LoadData import Data
+from LoadData import Data
 
 class DataGenerator():
 
@@ -155,5 +155,23 @@ class DataGenerator():
         return (question, answer, ImgFactory.draw33Figure(shapes, clrs, 180))
         
 
+    def  buildUniqueImageFromFigure(self):
 
+        answer = Data.randomFigure(without=["figure"])
+        alea_color = Data.randomColor()
+        image = ImgFactory.drawUniqueFigure(answer, alea_color, 180)
+
+        return (answer, image)
+
+
+def test():
+
+    gen = DataGenerator()
+
+    ans, img = gen.buildUniqueImageFromFigure()
+
+    img.saveToPNG("src/Data/test.png")
+    print(ans)
+
+test()
 
