@@ -4,7 +4,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 import torchvision
 
-from ResBlock import ResBlock
+from .ResBlock import ResBlock
 from torchvision import transforms
 from PIL import Image
 

@@ -13,7 +13,6 @@ class DataGenerator():
         self.imgFactory = ImgFactory()
         self.qaFactory = QAFactory()
     
-
     def buildImageFromQA(self, question=None):
 
         if question == None :
@@ -156,18 +155,23 @@ class DataGenerator():
         return (question, answer, ImgFactory.draw33Figure(shapes, clrs, 180))
         
 
+    def  buildUniqueImageFromFigure(self):
 
+        answer = Data.randomFigure(without=["figure"])
+        alea_color = Data.randomColor()
+        image = ImgFactory.drawUniqueFigure(answer, alea_color, 180)
+
+        return (answer, image)
 
 
 def test():
 
-    Generator = DataGenerator()
+    gen = DataGenerator()
 
-    for k in range(10):
-        
-        q, a, img = Generator.buildImageFromQA()
-        print(q)
-        print(a)
-        img.saveToPNG(f"src/Data/DataGen/test{k}.png")
+    ans, img = gen.buildUniqueImageFromFigure()
 
-# test()
+    img.saveToPNG("src/Data/test.png")
+    print(ans)
+
+test()
+
