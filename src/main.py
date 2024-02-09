@@ -41,11 +41,11 @@ def first_CNN(archi=CNN, img_size=180, input_shape=3, output_shape=16, device="c
 
     TrainLoader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
-    print("====== IMAGES GENEREES ======")
+    print("-> Images Générées")
 
     model = archi(img_size, input_shape, output_shape).to(device)
 
-    optimizer = torch.optim.SGD(model.parameters(), lr=lr, momentum=0.9)
+    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
     criterion = torch.nn.CrossEntropyLoss()
 
     for epoch in range(n_epochs):
@@ -62,9 +62,6 @@ def first_CNN(archi=CNN, img_size=180, input_shape=3, output_shape=16, device="c
             loss.backward()
             optimizer.step()
             running_loss += loss.item()
-
-            if not(i%(n_images/2)) :
-                print("-> Semi-Epoch")
 
         print(f'Epoch {epoch} / {n_epochs} | Loss: {running_loss / len(TrainLoader)}')
         if (epoch-1)%10 == 0 :
@@ -86,7 +83,7 @@ def main():
     print("====== RUNNING PROJECT ======")
 
     unique = True
-    mod = first_CNN(n_epochs=10, n_images=50, output_shape=4, device=device, unique=unique)
+    mod = first_CNN(n_epochs=30, n_images=5000, output_shape=4, device=device, unique=unique)
 
     print("====== RUNNING TESTS ======")
 
