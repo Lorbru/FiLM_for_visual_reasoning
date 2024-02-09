@@ -1,5 +1,4 @@
 import numpy as np
-import matplotlib.pyplot as plt
 import torch
 import sys
 import json
@@ -23,15 +22,17 @@ def first_CNN(archi=CNN, img_size=180, input_shape=3, output_shape=16, device="c
 
     labelsInv = dict(zip(labelsMaps.values(), labelsMaps.keys()))
 
-    DataGen = DataGenerator()
-
-    X, y = [], []
-
+    dataset = []
     question = QAFactory.randomQuestion(qtype="position", dirAlea="au centre")
 
     for i in range(n_images):
         
         _, answer, img = DataGen.buildImageFromQA(question)
+        answer = torch.tensor([int(labelsInv[answer])])
+        img = transform(img.img)
+        dataset += [(img.to(device), answer.to(device))]
+
+    TrainLoader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=True)
 
         y.append(int(labelsInv[answer]))
         
@@ -50,7 +51,7 @@ def first_CNN(archi=CNN, img_size=180, input_shape=3, output_shape=16, device="c
 
     print("====== IMAGES GENEREES ======")
 
-    model = archi(img_size, input_shape, output_shape)
+    model = archi(img_size, input_shape, output_shape).to(device)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
     criterion = torch.nn.CrossEntropyLoss()
@@ -58,7 +59,7 @@ def first_CNN(archi=CNN, img_size=180, input_shape=3, output_shape=16, device="c
     for epoch in range(n_epochs):
         running_loss = 0.0
         for i, (x, y) in enumerate(TrainLoader):
-            inputs, labels = x.to(device), y.to(device)
+            inputs, labels = x.to(device), y.squeeze(1).to(device)
 
             # zero the parameter gradients
             optimizer.zero_grad()
@@ -69,6 +70,9 @@ def first_CNN(archi=CNN, img_size=180, input_shape=3, output_shape=16, device="c
             loss.backward()
             optimizer.step()
             running_loss += loss.item()
+
+            if not(i%(n_images/2)) :
+                print("-> Semi-Epoch")
 
         print(f'Epoch {epoch} / {n_epochs} | Loss: {running_loss / len(TrainLoader)}')
         running_loss = 0.0
@@ -85,8 +89,17 @@ def main():
 
     print("====== RUNNING PROJECT ======")
 
-    # CNN Build
-    mod = first_CNN(n_epochs=5, n_images=2000, output_shape=4)
+    print(torch.cuda.is_available())
+    print(torch.cuda.device_count())
+    print(torch.cuda.get_device_name(0))
+
+    if torch.cuda.is_available() :
+        device = 'cuda'
+    else :
+        device = 'cpu'
+
+    mod = first_CNN(n_epochs=10, n_images=50, output_shape=4, device=device)
+
 
     # Data Transform to tensor and normalization 
     transform = transforms.Compose([
@@ -94,7 +107,8 @@ def main():
         transforms.Normalize((.5, .5, .5), (.5, .5, .5))
     ])
 
-    # Open labelsmap
+    print("====== TRAINING TERMINE ======")
+
     with open('src/DataGenerator/json/LabelsMaps.json', 'r') as f:
         labelsMaps = json.load(f)
     labelsInv = dict(zip(labelsMaps.values(), labelsMaps.keys()))
@@ -108,14 +122,13 @@ def main():
         
         _, answer, img = DataGen.buildImageFromQA(question)
         print(answer, int(labelsInv[answer]))
-        # answer = torch.tensor([int(labelsInv[answer])])
-        # img.saveToPNG("src/Data/DataGen/T0.png")
         img = transform(img.img)
-        img = img.unsqueeze(0)
+        img = img.unsqueeze(0).to(device)
 
         output = mod(img)
-        # print(output)
         print(output.argmax())
+
+        torch.save(mod.state_dict(), "src/Data/mod_final.pth")
 
 
 
