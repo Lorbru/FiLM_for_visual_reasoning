@@ -45,7 +45,7 @@ def first_CNN(archi=CNN, img_size=180, input_shape=3, output_shape=16, device="c
 
     model = archi(img_size, input_shape, output_shape).to(device)
 
-    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
+    optimizer = torch.optim.NAdam(model.parameters(), lr=lr)
     criterion = torch.nn.CrossEntropyLoss()
 
     for epoch in range(n_epochs):
@@ -83,7 +83,10 @@ def main():
     print("====== RUNNING PROJECT ======")
 
     unique = True
-    mod = first_CNN(n_epochs=30, n_images=5000, output_shape=4, device=device, unique=unique)
+    mod = first_CNN(n_epochs=50, n_images=1000, output_shape=4, device=device, unique=unique, lr=0.00001)
+    # mod = CNN(180, 3, 4).to(device)
+    # mod.load_state_dict(torch.load("src/Data/mod31.pth"))
+    # mod.eval()
 
     print("====== RUNNING TESTS ======")
 
