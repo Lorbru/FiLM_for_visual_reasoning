@@ -67,7 +67,7 @@ def first_CNN(archi=CNN, img_size=180, input_shape=3, output_shape=16, device="c
                 print("-> Semi-Epoch")
 
         print(f'Epoch {epoch} / {n_epochs} | Loss: {running_loss / len(TrainLoader)}')
-        if (epoch+1)%10 == 0 :
+        if (epoch-1)%10 == 0 :
             torch.save(model.state_dict(), "src/Data/mod"+str(epoch)+".pth")
         running_loss = 0.0
     return model
