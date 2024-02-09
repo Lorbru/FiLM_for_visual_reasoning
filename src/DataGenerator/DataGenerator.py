@@ -173,5 +173,4 @@ def test():
     img.saveToPNG("src/Data/test.png")
     print(ans)
 
-test()
 
