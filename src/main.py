@@ -49,7 +49,7 @@ def first_CNN(archi=CNN, img_size=180, input_shape=3, output_shape=16, device="c
     optimizer = torch.optim.NAdam(model.parameters(), lr=lr)
     criterion = torch.nn.CrossEntropyLoss()
 
-    for epoch in range(n_epochs):
+    for epoch in range(1,n_epochs+1):
         running_loss = 0.0
         for i, (x, y) in enumerate(TrainLoader):
             inputs, labels = x.to(device), y.squeeze(1).to(device)
@@ -66,7 +66,7 @@ def first_CNN(archi=CNN, img_size=180, input_shape=3, output_shape=16, device="c
             running_loss += loss.item()
 
         print(f'Epoch {epoch} / {n_epochs} | Loss: {running_loss / len(TrainLoader)}')
-        if (epoch+1)%10 == 0 and epoch != 1 :
+        if epoch%10 == 0 and epoch != 0 :
             torch.save(model.state_dict(), "src/Data/mod"+str(epoch)+".pth")
         running_loss = 0.0
     return model
