@@ -29,7 +29,7 @@
   * Lien vers le google collab pour la video/premier lien
     -https://docs.google.com/document/d/1q4eKSUx3QjD_uDNU-YLVtXwiaKRbtVu4D7QOeix4CJQ/edit?usp=sharing
   * Lien vers le google collab pour le resumer de chaque para de l'article
-    -ca arrive 
+    - https://docs.google.com/document/d/1CZtqXsPcoa7S_v1LYTTgmIcBa8AcRchWU2vr3w210pw/edit?usp=sharing
  
 
 ![alt text](https://pbs.twimg.com/media/D6sImswXYAA4dXP.jpg)
