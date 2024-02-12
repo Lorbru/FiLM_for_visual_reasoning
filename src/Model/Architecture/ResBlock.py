@@ -25,6 +25,7 @@ class ResBlock(nn.Module):
         x = self.relu(x)
         y = self.conv2(x)
         y = self.batch(y)
+        
         # y = self.film(y)
         y = self.relu(y)
         return x + y
