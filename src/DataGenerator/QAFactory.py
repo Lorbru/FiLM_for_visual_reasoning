@@ -7,7 +7,7 @@ from LoadData import Data
 class QAFactory():
 
     @staticmethod
-    def randomQuestion(qtype=None, dirAlea=None, q1=None, q2=None):
+    def randomQuestion(qtype=None, dirAlea=None, q1=None, q2=None, formulation=None):
 
         if qtype == None :
             qtype = Data.randomQType()
@@ -17,7 +17,7 @@ class QAFactory():
             q1 = QuestionElement.randomElement()
         if q2 == None :
             q2 = QuestionElement.randomElement()
-        return Question(qtype, q1, q2, dirAlea)
+        return Question(qtype, q1, q2, dirAlea, formulation)
     
     @staticmethod
     def randomQuestionAndAnswer(qtype=None, dirAlea=None, q1=None, q2=None):

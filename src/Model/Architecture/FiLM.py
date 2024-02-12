@@ -9,7 +9,7 @@ class FiLM(nn.Module):
 
         # Construction d'une couche FiLM
         # --> regarder l'article 
-        # TODO
+        
         pass
 
     def forward(self, x):

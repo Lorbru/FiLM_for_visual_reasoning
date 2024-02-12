@@ -17,7 +17,7 @@ class ResBlock(nn.Module):
         self.relu = nn.ReLU()
         self.conv2 = nn.Conv2d(size, size, 3, padding=1)
         self.batch = nn.BatchNorm2d(size)
-        # self.film = ...
+        self.film = FiLM()
 
     def forward(self, x):
         # Prediction du modèle

@@ -17,6 +17,7 @@ def first_GRU(archi=GRUNet, input_shape=1, hidden_dim=512, output_shape=4, n_lay
     ])
 
     dataset = []
+    
     DataGen = DataGenerator()
 
     # TODO Train Loader

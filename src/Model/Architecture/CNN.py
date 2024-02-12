@@ -12,6 +12,7 @@ from PIL import Image
 
 
 class CNN(nn.Module):
+    
     DEFAULT_CHANNELS_RESBLOCK = 128
     DEFAULT_POOLING_SIZE = 14
 
