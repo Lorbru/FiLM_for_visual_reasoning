@@ -8,6 +8,7 @@ from QAFactory import QAFactory
 from torchvision import transforms
 
 from Script.Train_CNN import first_CNN
+from Script.Train_Full import first_Full
 
 def main():
 
@@ -22,13 +23,17 @@ def main():
 
     print("====== RUNNING PROJECT ======")
 
-    unique = False
-    mod = first_CNN(n_epochs=10, n_images=5, output_shape=4, device=device, unique=unique, lr=0.00001)
+    full = True
+    if full :
+        mod = first_Full(n_epochs=10, n_images=5, output_shape=4, device=device, lr=0.00001)
+    else :
+        unique = False
+        # mod = first_CNN(n_epochs=10, n_images=5, output_shape=4, device=device, unique=unique, lr=0.00001)
 
-    # mod = CNN(180, 3, 4).to(device)
-    # mod.load_state_dict(torch.load("src/Data/mod31.pth"))
-    # mod.eval()
-    # mod = first_CNN(n_epochs=50, n_images=5000, output_shape=4, device=device, unique=unique, lr=0.00001, model=mod)
+        # mod = CNN(180, 3, 4).to(device)
+        # mod.load_state_dict(torch.load("src/Data/mod31.pth"))
+        # mod.eval()
+        # mod = first_CNN(n_epochs=50, n_images=5000, output_shape=4, device=device, unique=unique, lr=0.00001, model=mod)
 
     print("====== RUNNING TESTS ======")
 
@@ -44,25 +49,36 @@ def main():
 
     DataGen = DataGenerator()
     n_tests = 10
-    if unique :
-        sum = 0
-        for i in range(n_tests):
-            answer, img = DataGen.buildUniqueImageFromFigure()
-            img = transform(img.img)
-            img = img.unsqueeze(0).to(device)
-            output = mod(img)
-            sum += int(labelsInv[answer]) == int(output.argmax())
-        print("Accuracy : "+str(sum/n_tests*100)+"%")
-    else :
+    if full :
         sum = 0
         question = QAFactory.randomQuestion(qtype="position", dirAlea="au centre")
         for i in range(n_tests):
-            _, answer, img = DataGen.buildImageFromQA(question)
+            question, answer, img = DataGen.buildImageFromQA(question)
             img = transform(img.img)
             img = img.unsqueeze(0).to(device)
             output = mod(img)
             sum += int(labelsInv[answer]) == int(output.argmax())
         print("Accuracy : " + str(sum / n_tests * 100) + "%")
+    else :
+        if unique :
+            sum = 0
+            for i in range(n_tests):
+                answer, img = DataGen.buildUniqueImageFromFigure()
+                img = transform(img.img)
+                img = img.unsqueeze(0).to(device)
+                output = mod(img)
+                sum += int(labelsInv[answer]) == int(output.argmax())
+            print("Accuracy : "+str(sum/n_tests*100)+"%")
+        else :
+            sum = 0
+            question = QAFactory.randomQuestion(qtype="position", dirAlea="au centre")
+            for i in range(n_tests):
+                question, answer, img = DataGen.buildImageFromQA(question)
+                img = transform(img.img)
+                img = img.unsqueeze(0).to(device)
+                output = mod(img)
+                sum += int(labelsInv[answer]) == int(output.argmax())
+            print("Accuracy : " + str(sum / n_tests * 100) + "%")
 
     print("======       END      =======")
     return 

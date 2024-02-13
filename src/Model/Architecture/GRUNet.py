@@ -48,18 +48,6 @@ class GRUNet(nn.Module):
         # Passer l'embedding et l'état caché initial à travers le GRU
         out, _ = self.gru(x, h0)
         # Renvoyer la sortie du GRU
+        out = self.outLayer(out)
         return out
 
-
-
-
-
-# Créer une instance du modèle
-            # nombre de mots vocab, # 200   # 4096       # 
-model = GRUNet(vocab_size, embedding_dim, hidden_size, num_layers)
-
-# Créer une séquence d'entrée. Ici, nous utilisons une séquence d'exemple.
-input_sequence = torch.tensor([5, 3, 9, 2, 7, 4]).unsqueeze(0)  # Ajouter une dimension pour le batch
-
-# Passer la séquence d'entrée à travers le modèle
-output = model(input_sequence)
