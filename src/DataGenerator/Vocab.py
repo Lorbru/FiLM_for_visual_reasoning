@@ -1,5 +1,5 @@
-from LoadData import Data
-from QAFactory import QAFactory
+from .LoadData import Data
+from .QAFactory import QAFactory
 import json
 
 class BuildVocab():
@@ -50,7 +50,7 @@ class BuildVocab():
 
         ensemble = set(words_list)
 
-        dict = {word: i for i, word in enumerate(ensemble)}
+        dict = {word: i+1 for i, word in enumerate(ensemble)}
         
         with open('src/DataGenerator/json/vocab.json', 'w') as f:
             json.dump(dict, f)

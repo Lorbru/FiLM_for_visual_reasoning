@@ -8,6 +8,10 @@ class Data():
 
     with open('src/DataGenerator/json/QA.json', 'r') as f:
         QAjson = json.load(f)
+
+    with open('src/DataGenerator/json/LabelsMaps.json', 'r') as f: 
+        Anslist = json.load(f)
+
     
     ClrList = [clr for clr in ObjData["color"]]
     FigList = [fig for fig in ObjData["shape"]]
@@ -57,4 +61,13 @@ class Data():
     @staticmethod
     def getQTypeId(type):
         return Data.QType.index(type)
+    
+    @staticmethod
+    def getAnsIndex(answer):
+        return Data.Anslist.index(answer)
 
+def test():
+
+    print(Data.Anslist.index('rectangle'))
+
+test()

@@ -1,10 +1,10 @@
 import random
-from ImgFactory import ImgFactory
-from Question import Question
-from QAFactory import QAFactory
+from .ImgFactory import ImgFactory
+from .Question import Question
+from .QAFactory import QAFactory
 import numpy as np
 from PIL import Image
-from LoadData import Data
+from .LoadData import Data
 
 class DataGenerator():
 
@@ -37,7 +37,10 @@ class DataGenerator():
             
             for i in range(9):
                 if i in idalea :
-                    clrs[i] = Data.getColorId(color)
+                    if (color != ''):
+                        clrs[i] = Data.getColorId(Data.randomColor())
+                    else :
+                        clrs[i] = Data.randomColor()
                     shapes[i] = Data.getFigId(figure)
 
                 else :

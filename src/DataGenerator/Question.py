@@ -1,7 +1,7 @@
-from QuestionElement import QuestionElement
+from .QuestionElement import QuestionElement
 import json
 import numpy as np
-from LoadData import Data
+from .LoadData import Data
 
 
 class Question():

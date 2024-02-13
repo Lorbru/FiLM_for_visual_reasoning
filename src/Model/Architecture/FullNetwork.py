@@ -2,37 +2,32 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-import torchvision
+
 
 from .ResBlock import ResBlock
 from .GRUNet import GRUNet
-from GRUNet import GRUNet
-from torchvision import transforms
-from PIL import Image
+
 
 class FullNetwork(nn.Module):
 
-    # forward pour la question --> gamma et beta
-
-    # forward pour l'image --> 
-
-    def forward(self, x, z):
-
-        gb = self.gruNet(z)
     DEFAULT_CHANNELS_RESBLOCK = 128
     DEFAULT_POOLING_SIZE = 14
 
-    def __init__(self, img_size, nb_channels, output_size, vocab_size, embedding_dim, hidden_size, num_layers, dcr=DEFAULT_CHANNELS_RESBLOCK, dps=DEFAULT_POOLING_SIZE):
+    def __init__(self, img_size, nb_channels, output_size, vocab_size, embedding_dim, hidden_size, num_layers, batch_size, dcr=DEFAULT_CHANNELS_RESBLOCK, dps=DEFAULT_POOLING_SIZE):
+        
         super().__init__()
-        # Construction du CNN (analyse de l'image avec introduction de couches FiLM)
+
+        # paramètres du modèle
         self.imgSize = img_size
         self.channels = nb_channels
         self.outSize = output_size
+        self.dcr = dcr
+        self.dps = dps
 
-        # Première convolution
+        # Première étape de convolution
         self.conv1 = nn.Conv2d(self.channels, dcr, 3)
         self.pool1 = nn.AdaptiveMaxPool2d((dps, dps))
-        # 128 images 14*14
+        # 128 images 14*14 par défaut
 
         # Resblocks
         self.resBlock1 = ResBlock(dcr)
@@ -49,25 +44,37 @@ class FullNetwork(nn.Module):
         self.classif_l2 = nn.Linear(1024, 1024)
         self.classif_out = nn.Linear(1024, output_size)
         self.activation_out = nn.Softmax(dim=1)
+        print((vocab_size, embedding_dim, hidden_size, num_layers, 4, dcr))
+        self.grunet = GRUNet(vocab_size, embedding_dim, hidden_size, num_layers, 4, dcr)
+        self.batch_size = batch_size
 
-        self.grunet = GRUNet(vocab_size, embedding_dim, hidden_size, num_layers)
     def forward(self, x, z):
-        # Prediction du modèle
+        
+        # Première étape de convolution
         x = self.conv1(x)
         x = self.pool1(x)
 
-        gbs = self.grunet(z)
+        # Evaluation de la question sur le GRU et génération de paramètres FiLM
+        FiLM_params = self.grunet(z).reshape(4, 2, self.batch_size, 128)
 
-        x = self.resBlock1(x, gbs[0], gbs[1])
-        x = self.resBlock2(x, gbs[2], gbs[3])
-        x = self.resBlock3(x, gbs[4], gbs[5])
-        x = self.resBlock4(x, gbs[6], gbs[7])
+        # Passage dans le ResNet
+        x = self.resBlock1(x, FiLM_params[0])
+        x = self.resBlock2(x, FiLM_params[1])
+        x = self.resBlock3(x, FiLM_params[2])
+        x = self.resBlock4(x, FiLM_params[3])
 
+        # Sortie de convolution
         x = self.classifConv(x)
         x = self.classifPool(x)
+
+        # Multi layer perceptron pour la classification finale
         x = self.flatten(x)
         x = self.classif_l1(x)
         x = self.activation(x)
         x = self.classif_l2(x)
         x = self.activation(x)
+
         return self.activation_out(self.classif_out(x))
+    
+
+
