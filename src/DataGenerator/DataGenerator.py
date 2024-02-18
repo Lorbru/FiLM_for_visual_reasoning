@@ -1,11 +1,8 @@
-import random
-from .ImgFactory import ImgFactory
-from .Question import Question
-from .QAFactory import QAFactory
+from src.DataGenerator.ImgFactory import ImgFactory
+from src.DataGenerator.QAFactory import QAFactory
 import numpy as np
-from PIL import Image
-from .LoadData import Data, AnswerData
-from .Vocab import BuildVocab
+from src.DataGenerator.LoadData import Data, AnswerData
+from src.DataGenerator.Vocab import BuildVocab
 
 class DataGenerator():
 

@@ -4,10 +4,8 @@ import sys
 import json
 
 from torchvision import transforms
-from DataGenerator.DataGenerator import DataGenerator
-from DataGenerator.Vocab import BuildVocab
+from src.DataGenerator.DataGenerator import DataGenerator
 from Model.Architecture.FullNetwork import FullNetwork
-from DataGenerator.LoadData import Data
 from torch.nn.utils.rnn import pad_sequence
 
 from torch.utils.data import Dataset, DataLoader
@@ -121,10 +119,10 @@ def main():
 
     print("===========           TRAINING LOOP           ===========")
     # Model
-    model = FullNetwork(nb_channels, output_size, vocab_size)
+    model = FullNetwork(nb_channels, output_size, vocab_size).to(device)
     
     # Optimizer/Criterion
-    optimizer = torch.optim.NAdam(model.parameters(), lr=0.01)
+    optimizer = torch.optim.NAdam(model.parameters(), lr=3e-4, weight_decay=1e-5)
     criterion = torch.nn.CrossEntropyLoss()
 
     for epoch in range(1,n_epochs+1):
