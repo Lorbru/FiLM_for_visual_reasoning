@@ -57,4 +57,21 @@ class Data():
     @staticmethod
     def getQTypeId(type):
         return Data.QType.index(type)
+    
+    
+class AnswerData():
 
+    def __init__(self, type_vocab):
+
+        with open(f'src/DataGenerator/AVocabulary/{type_vocab}.json', 'r') as f:
+            self.answerList = json.load(f)
+        
+    def getAnswerIndex(self, answer):
+        return self.answerList.index(answer)
+    
+    def getAnswer(self, index):
+        return self.answerList[index]
+    
+    def randomAnswer(self):
+        return np.random.choice(self.answerList)
+    

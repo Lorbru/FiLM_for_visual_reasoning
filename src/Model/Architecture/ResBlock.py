@@ -17,15 +17,36 @@ class ResBlock(nn.Module):
         self.relu = nn.ReLU()
         self.conv2 = nn.Conv2d(size, size, 3, padding=1)
         self.batch = nn.BatchNorm2d(size)
-        # self.film = ...
 
-    def forward(self, x):
+    def forward(self, x, film_params):
+        
         # Prediction du modèle
         x = self.conv1(x)
         x = self.relu(x)
         y = self.conv2(x)
         y = self.batch(y)
-        # y = self.film(y)
+
+        # ============= FiLM =============
+        
+        # récupération des paramètres gamma, beta
+        gamma = film_params[0]
+        beta = film_params[1]
+
+        # dim1 --> batch_size
+        dim1 = gamma.size(0)
+
+        # dim2 --> nb_channels
+        dim2 = gamma.size(1)
+
+        # redimensionnement pour le produit spatial avec chacun des channels des images
+        gamma = gamma.view(dim1, dim2, 1, 1)
+        beta = beta.view(dim1, dim2, 1, 1)
+
+        # FiLM
+        y = gamma * x + beta
+
+        # ========================================================================
+
         y = self.relu(y)
         return x + y
     

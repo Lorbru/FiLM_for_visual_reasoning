@@ -1,0 +1,10 @@
+=======================    Fichier pour configurer les paramètres d'entrainement     =======================
+QAData -> Type de données et de problème posé : 
+    * completeQA : jeu de données images 3 * 3 avec les trois types de questions (complet)
+    * rightLeftQA : jeu de données images 1 * 2 avec une seule question -> quelle figure à droite/à gauche ?
+============================================================================================================
+
+QAData=rightLeftQA
+nData=128
+nEpochs=3
+batchSize=32

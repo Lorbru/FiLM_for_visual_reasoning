@@ -1,12 +1,12 @@
-from QuestionElement import QuestionElement
+from .QuestionElement import QuestionElement
 import json
 import numpy as np
-from LoadData import Data
+from .LoadData import Data
 
 
 class Question():
         
-    def __init__(self, type, mainObject:QuestionElement, secondObject:QuestionElement=None, direction=None):
+    def __init__(self, type, mainObject:QuestionElement, secondObject:QuestionElement=None, direction=None, formulation=None):
         
         self.type = type # type de question
         # type 1 : (Présence) Y a t-il [...] sur l'image => (Oui/Non)
@@ -19,6 +19,9 @@ class Question():
         self.direction = direction
         self.mainObject = mainObject
         self.secondObject = secondObject
+        if (formulation==None or not(formulation in [0, 1, 2])) : 
+            formulation = np.random.randint(0, 3)
+        self.formulation = formulation
 
         # On transforme ici les questions non pertinentes ("interdites") : 
         # - Combien de figures ? (toujours 9)
@@ -53,16 +56,31 @@ class Question():
     def __str__(self):
         
         if self.type == 'presence' : 
-            return "Y a t-il " + self.mainObject.printObject(False) + " ?"
+            if self.formulation == 0 :
+                return "Y a t-il " + self.mainObject.printObject(False) + " ?"
+            elif self.formulation == 1 :
+                return "Peut-on voir " + self.mainObject.printObject(False) + " ?"
+            elif self.formulation == 2 :
+                return "Est-ce qu'il y a " + self.mainObject.printObject(False) + " ?"
         
         elif self.type == 'comptage' :
-            return "Combien y a t-il " + self.mainObject.printObject(True) + " ?"
+            if (self.formulation == 0):
+                return "Combien y a t-il " + self.mainObject.printObject(True) + " ?"
+            elif (self.formulation == 1):
+                return "Quel est le nombre " + self.mainObject.printObject(True) + " ?"
+            elif (self.formulation == 2):
+                return "Combien " + self.mainObject.printObject(True) + " peut-on observer ?"
 
         elif self.type == 'comparaison' : 
             return "Y a t-il plus " + self.mainObject.printObject(True) + " que " + self.secondObject.printObject(True) + " ?"
 
         elif self.type == 'position' : 
-            return "Quelle figure se trouve " + self.direction + " ?"
+            if (self.formulation == 0):
+                return "Quelle figure se trouve " + self.direction + " ?"
+            elif (self.formulation == 1):
+                return "Que peut-on voir " + self.direction + " ?"
+            elif (self.formulation == 2):
+                return "Qu'y a t-il " + self.direction + " ?"
     
         return None
     

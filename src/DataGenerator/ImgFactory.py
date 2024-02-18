@@ -1,9 +1,31 @@
-from LoadData import Data
-from Shapes import Shapes
+from .LoadData import Data
+from .Shapes import Shapes
 import numpy as np
 
 class ImgFactory():
 
+    @staticmethod
+    def draw12RandomFigure(dim, type_gauche=None, type_droit=None):
+
+        randomImg = Shapes(dim)
+        types = [type_gauche, type_droit]
+        unit = dim/2
+        for i in range(2):
+            color = tuple(np.array(Data.ObjData["color"][Data.randomColor()]["RGB"]))
+            alea_fig = types[i]
+            if (alea_fig == None):
+                alea_fig = Data.randomFigure(without = ["figure"])
+            if (alea_fig == "ellipse"):
+                randomImg.drawEllipse((i*unit)+dim/8, dim/3, .5*unit, .5*unit, clr=color)
+            elif (alea_fig == "rectangle") :
+                randomImg.drawRect((i*unit)+dim/8, dim/3, .5*unit, .5*unit, clr=color)
+            elif (alea_fig == "triangle") :
+                randomImg.drawTriangle((i*unit)+dim/8, dim/3, .5*unit, .5*unit, clr=color)
+            elif (alea_fig == "etoile") :
+                randomImg.drawStar((i*unit)+dim/8, dim/3, .5*unit, .5*unit, clr=color)
+        return randomImg
+            
+            
     @staticmethod
     def draw33RandomFigure(dim):
 
@@ -18,7 +40,7 @@ class ImgFactory():
                 x, y = np.array([i * unit, j * unit]) + alea_d
                 dx, dy = (tile_shape - alea_d) * (0.5 + np.random.rand(2)/2)
                 alea_rot = 360 * np.random.rand()
-                alea_fig = np.random.randint(0, 4)
+                alea_fig = np.random.choice(["ellipse", "etoile", "rectangle", "triangle"])
                 alea_color = np.array(Data.ObjData["color"][Data.randomColor()]["RGB"])
                 alea_noise = np.random.randint(-min(20, min(alea_color)), min(20, 255-max(alea_color)), 3)
                 alea_color = tuple(alea_color + alea_noise)
@@ -87,3 +109,10 @@ class ImgFactory():
             randomImg.drawTriangle(x, y, dx, dy, rotation=alea_rot, random_noise=True, clr=color)
 
         return randomImg
+
+def test():
+
+    Img = ImgFactory.draw12RandomFigure(120, "etoile", "ellipse")
+    Img.saveToPNG('src/Data/img_12.png')
+
+test()

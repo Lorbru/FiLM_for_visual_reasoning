@@ -3,69 +3,167 @@ import torch
 import sys
 import json
 
-from DataGenerator import DataGenerator
-from QAFactory import QAFactory
 from torchvision import transforms
+from DataGenerator.DataGenerator import DataGenerator
+from DataGenerator.Vocab import BuildVocab
+from Model.Architecture.FullNetwork import FullNetwork
+from DataGenerator.LoadData import Data
+from torch.nn.utils.rnn import pad_sequence
 
-from Script.Train_CNN import first_CNN
+from torch.utils.data import Dataset, DataLoader
+
+class QAimgDataset(Dataset):
+
+    def __init__(self, list1, list2, list3):
+        self.list1 = list1
+        self.list2 = list2
+        self.list3 = list3
+
+    def __len__(self):
+        return len(self.list1)  # suppose que toutes les listes ont la même longueur
+
+    def __getitem__(self, idx):
+        return self.list1[idx], self.list2[idx], self.list3[idx]
+
+
 
 def main():
+    print("#########################################################")
+    print("###############      RUNNING PROJECT      ###############")
+    print(f"#########################################################\n")
 
-    print("====== CHECKING GPU ======")
 
-    if torch.cuda.is_available():
-        print("Cuda Nvidia available",torch.cuda.get_device_name(0))
+    
+
+
+
+    print("=========== CHECKING IF NVIDIA CUDA AVAILABLE ===========")
+
+    if torch.cuda.is_available() :
+        print("  > set device on nvidia-cuda")
         device = 'cuda'
-    else :
-        print("Cuda Nvidia not available. Go on CPU")
+    else : 
+        print(f"  > nvidia cuda not available : set device on cpu\n")
         device = 'cpu'
+    
+    print("===========        SETTING PARAMETERS         ===========")
+    
+    # Paramètres par défaut (si non ou mal configurés) :
+    batch_size = 4                           # taille de batch
+    nb_channels = 3                          # nombre de channels images (3 -> RGB)
+    n_images = 10                            # nombre d'images générées pour l'entrainement
+    n_epochs = 3                             # nombre d'époques pour l'entrainement
+    type_vocab = "completeQA"                # type de jeu de données choisi
 
-    print("====== RUNNING PROJECT ======")
+    # Lecture de configuration choisie
+    with open('src/config.txt', 'r') as config:
+        for line in config.readlines():
+            line = line.replace('\n', '=')
+            wrds = line.split('=')
+            if wrds[0] == "QAData":
+                type_vocab = wrds[1]
+            elif wrds[0] == "nData":
+                n_images = int(wrds[1])
+            elif wrds[0] == "nEpochs":
+                n_epochs = int(wrds[1])
+            elif wrds[0] == "batchSize":
+                batch_size = int(wrds[1])
 
-    unique = False
-    mod = first_CNN(n_epochs=10, n_images=5, output_shape=4, device=device, unique=unique, lr=0.00001)
+    print(f"  > Question/Answer data       : '{type_vocab}'")
 
-    # mod = CNN(180, 3, 4).to(device)
-    # mod.load_state_dict(torch.load("src/Data/mod31.pth"))
-    # mod.eval()
-    # mod = first_CNN(n_epochs=50, n_images=5000, output_shape=4, device=device, unique=unique, lr=0.00001, model=mod)
+    # instanciation générateur de données et vocabulaire
+    datagen = DataGenerator(type_vocab)
 
-    print("====== RUNNING TESTS ======")
+    output_size = datagen.getAnswerSize()    # taille des sortie (nombre de réponses possibles)
+    vocab_size = datagen.getVocabSize()      # taille du vocabulaire
 
+
+    print(f"  > Number of data             : {n_images}")
+    print(f"  > Number of epochs           : {n_epochs}")
+    print(f"  > Batch size                 : {batch_size}")
+    print(f"  > Vocabulary size            : {vocab_size}")
+    print(f"  > Number of possible answers : {output_size}\n")
+
+
+    print("===========  DATA GENERATION AND PROCESSING   ===========")
+    # Generation et processing des données
+    img_dataset = []
+    quest_dataset = []
+    ans_dataset = []
+
+    # processing data
     transform = transforms.Compose([
         transforms.ToTensor(),
         transforms.Normalize((.5, .5, .5), (.5, .5, .5))
     ])
 
-    with open('src/DataGenerator/json/LabelsMaps.json', 'r') as f:
-        labelsMaps = json.load(f)
 
-    labelsInv = dict(zip(labelsMaps.values(), labelsMaps.keys()))
+    for i in range(n_images):
 
-    DataGen = DataGenerator()
-    n_tests = 10
-    if unique :
-        sum = 0
-        for i in range(n_tests):
-            answer, img = DataGen.buildUniqueImageFromFigure()
-            img = transform(img.img)
-            img = img.unsqueeze(0).to(device)
-            output = mod(img)
-            sum += int(labelsInv[answer]) == int(output.argmax())
-        print("Accuracy : "+str(sum/n_tests*100)+"%")
-    else :
-        sum = 0
-        question = QAFactory.randomQuestion(qtype="position", dirAlea="au centre")
-        for i in range(n_tests):
-            _, answer, img = DataGen.buildImageFromQA(question)
-            img = transform(img.img)
-            img = img.unsqueeze(0).to(device)
-            output = mod(img)
-            sum += int(labelsInv[answer]) == int(output.argmax())
-        print("Accuracy : " + str(sum / n_tests * 100) + "%")
+        # generation d'une donnée
+        quest, answer, img = datagen.buildData()
 
-    print("======       END      =======")
-    return 
+        # processing (tenseur/normalisation/encodage question/batch dim)
+        quest_dataset.append(torch.tensor(datagen.getEncodedSentence(str(quest))))
+        ans_dataset.append(torch.tensor(datagen.getAnswerId(answer))) #.to(device))
+        img_dataset.append(transform(img.img)) #.unsqueeze(0).to(device))
+
+    # Padding pour une taille uniforme des phrases.
+    quest_dataset = pad_sequence(quest_dataset, batch_first=True) #.unsqueeze(0).to(device)
+
+    # Dataset
+    dataset = QAimgDataset(img_dataset, quest_dataset, ans_dataset)
+
+    # Train loader
+    TrainLoader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=True)
+
+    print(f"  > Done\n")
+
+    print("===========           TRAINING LOOP           ===========")
+    # Model
+    model = FullNetwork(nb_channels, output_size, vocab_size)
+    
+    # Optimizer/Criterion
+    optimizer = torch.optim.NAdam(model.parameters(), lr=0.01)
+    criterion = torch.nn.CrossEntropyLoss()
+
+    for epoch in range(1,n_epochs+1):
+
+        running_loss = 0.0
+        
+        for i, (x, z, y) in enumerate(TrainLoader):
+
+            inputs, questions, labels = x.to(device), z.to(device), y.to(device)
+
+            # zero the parameter gradients
+            optimizer.zero_grad()
+
+            # forward + backward + optimize
+            outputs = model(inputs, questions)
+
+            # Compute loss
+            loss = criterion(outputs, labels)
+
+            # Gradient back propagation
+            loss.backward()
+
+            # Optimizer step
+            optimizer.step()
+
+            # Save loss 
+            running_loss += loss.item()
+
+        print(f'  > Epoch {epoch} / {n_epochs} | Loss: {running_loss / len(TrainLoader)}')
+        if epoch%10 == 0 :
+            # Saving model each 10 epochs of training
+            torch.save(model.state_dict(), "src/Data/mod"+str(epoch)+".pth")
+        running_loss = 0.0
+    
+    
+    print(f"\n===========            END PROCESS            ===========")
+    
+    return 0
+    
 
 
 
