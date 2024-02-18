@@ -4,7 +4,7 @@ QAData -> Type de données et de problème posé :
     * rightLeftQA : jeu de données images 1 * 2 avec une seule question -> quelle figure à droite/à gauche ?
 ============================================================================================================
 
-QAData=rightLeftQA
-nData=128
+QAData=completeQA
+nData=1000
 nEpochs=3
-batchSize=32
+batchSize=64

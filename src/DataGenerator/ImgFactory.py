@@ -30,7 +30,7 @@ class ImgFactory():
     def draw33RandomFigure(dim):
 
         randomImg = Shapes(dim)
-        randomImg.randomGradient()
+        # randomImg.randomGradient()
         unit = dim/3
         tile_shape = np.array([unit, unit])
 
@@ -59,7 +59,7 @@ class ImgFactory():
     def draw33Figure(figures, colors, dim):
         
         randomImg = Shapes(dim)
-        randomImg.randomGradient()
+        # randomImg.randomGradient()
         unit = dim/3
         tile_shape = np.array([unit, unit])
 

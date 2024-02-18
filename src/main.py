@@ -1,5 +1,7 @@
 import numpy as np
+from PIL import Image
 import torch
+import os
 import sys
 import json
 
@@ -12,16 +14,23 @@ from torch.utils.data import Dataset, DataLoader
 
 class QAimgDataset(Dataset):
 
-    def __init__(self, list1, list2, list3):
-        self.list1 = list1
-        self.list2 = list2
-        self.list3 = list3
+    def __init__(self, images, questions, answers, transform=None):
+        self.images = images
+        self.questions = questions
+        self.answers = answers
+        self.transform = transform
+
+    def get_image(self, num):
+        image = Image.open("src/Data/GeneratedImages/img_" + str(num) + ".png")
+        return image
 
     def __len__(self):
-        return len(self.list1)  # suppose que toutes les listes ont la même longueur
+        return len(self.images)  # suppose que toutes les listes ont la même longueur
 
     def __getitem__(self, idx):
-        return self.list1[idx], self.list2[idx], self.list3[idx]
+        image = self.get_image(idx)
+        image = self.transform(image)
+        return image, self.questions[idx], self.answers[idx]
 
 
 
@@ -43,7 +52,7 @@ def main():
     else : 
         print(f"  > nvidia cuda not available : set device on cpu\n")
         device = 'cpu'
-    
+
     print("===========        SETTING PARAMETERS         ===========")
     
     # Paramètres par défaut (si non ou mal configurés) :
@@ -73,7 +82,7 @@ def main():
     datagen = DataGenerator(type_vocab)
 
     output_size = datagen.getAnswerSize()    # taille des sortie (nombre de réponses possibles)
-    vocab_size = datagen.getVocabSize()      # taille du vocabulaire
+    vocab_size = datagen.getVocabSize() + 1     # taille du vocabulaire
 
 
     print(f"  > Number of data             : {n_images}")
@@ -100,17 +109,18 @@ def main():
 
         # generation d'une donnée
         quest, answer, img = datagen.buildData()
+        img.saveToPNG("src/Data/GeneratedImages/img_" + str(i) + ".png")
 
         # processing (tenseur/normalisation/encodage question/batch dim)
         quest_dataset.append(torch.tensor(datagen.getEncodedSentence(str(quest))))
         ans_dataset.append(torch.tensor(datagen.getAnswerId(answer))) #.to(device))
-        img_dataset.append(transform(img.img)) #.unsqueeze(0).to(device))
+        img_dataset.append(i) #.unsqueeze(0).to(device))
 
     # Padding pour une taille uniforme des phrases.
     quest_dataset = pad_sequence(quest_dataset, batch_first=True) #.unsqueeze(0).to(device)
 
     # Dataset
-    dataset = QAimgDataset(img_dataset, quest_dataset, ans_dataset)
+    dataset = QAimgDataset(img_dataset, quest_dataset, ans_dataset, transform)
 
     # Train loader
     TrainLoader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=True)
