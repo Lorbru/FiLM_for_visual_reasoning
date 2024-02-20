@@ -130,9 +130,9 @@ def main():
     print("===========           TRAINING LOOP           ===========")
     # Model
     model = FullNetwork(nb_channels, output_size, vocab_size).to(device)
-    
+
     # Optimizer/Criterion
-    optimizer = torch.optim.NAdam(model.parameters(), lr=3e-4, weight_decay=1e-5)
+    optimizer = torch.optim.Adam(model.parameters(), lr=3e-5, weight_decay=1e-5)
     criterion = torch.nn.CrossEntropyLoss()
 
     for epoch in range(1,n_epochs+1):

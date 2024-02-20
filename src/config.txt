@@ -5,6 +5,6 @@ QAData -> Type de données et de problème posé :
 ============================================================================================================
 
 QAData=completeQA
-nData=1000
-nEpochs=3
+nData=500000
+nEpochs=150
 batchSize=64
