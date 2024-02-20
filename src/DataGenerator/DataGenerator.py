@@ -71,6 +71,8 @@ class DataGenerator():
                         clrs[i] = Data.getColorId(color)
                     else :
                         clrs[i] = Data.getColorId(Data.randomColor())
+                    if (figure == 'figure'):
+                        figure = Data.randomFigure(without=['figure'])
                     shapes[i] = Data.getFigId(figure)
 
                 else :
