@@ -19,6 +19,8 @@
 
 * Lien vers le google collab pour le resumer de chaque para de l'article
   - https://docs.google.com/document/d/1CZtqXsPcoa7S_v1LYTTgmIcBa8AcRchWU2vr3w210pw/edit?usp=sharing
+* Lien vers Overleaf (LateX)
+  - https://www.overleaf.com/2972594869wqghkcczkzgs#df7577
 * Lien diapos :
   - https://docs.google.com/presentation/d/1i0JWfi9JWMTSVnleojXdwbpjxjAehlWk1srFOHdOuU4/edit?usp=sharing
 
