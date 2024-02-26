@@ -5,7 +5,7 @@ QAData -> Type de données et de problème posé :
 ============================================================================================================
 
 QAData=rightLeftQA
-nDataTrain=5
-nDataTest=5
+nDataTrain=32
+nDataTest=12
 nEpochs=10
-batchSize=64
+batchSize=8

@@ -8,31 +8,10 @@ import json
 from torchvision import transforms
 from src.DataGenerator.DataGenerator import DataGenerator
 from Model.Architecture.FullNetwork import FullNetwork
-from Model.CreateDataset import CreateDataset
+from Model.CreateDataset import CreateDataset, QAimgDataset
 from torch.nn.utils.rnn import pad_sequence
 
 from torch.utils.data import Dataset, DataLoader
-
-class QAimgDataset(Dataset):
-
-    def __init__(self, images, questions, answers, transform=None):
-        self.images = images
-        self.questions = questions
-        self.answers = answers
-        self.transform = transform
-
-    def get_image(self, num):
-        image = Image.open("src/Data/GeneratedImages/img_" + str(num) + ".png")
-        return image
-
-    def __len__(self):
-        return len(self.images)  # suppose que toutes les listes ont la même longueur
-
-    def __getitem__(self, idx):
-        image = self.get_image(idx)
-        image = self.transform(image)
-        return image, self.questions[idx], self.answers[idx]
-
 
 
 def main():
@@ -40,8 +19,6 @@ def main():
     print("###############      RUNNING PROJECT      ###############")
     print(f"#########################################################\n")
 
-
-    
 
 
 
@@ -121,6 +98,7 @@ def main():
     for epoch in range(1,n_epochs+1):
 
         running_loss = 0.0
+        resTrain = 0
         
         for i, (x, z, y) in enumerate(TrainLoader):
 
@@ -144,15 +122,19 @@ def main():
             # Save loss 
             running_loss += loss.item()
 
-        print(f'  > Epoch {epoch} / {n_epochs} | Loss: {running_loss / len(TrainLoader)} ', end='')
+            for j in range(len(outputs)):
+                resTrain += (int(outputs[j].argmax()) == int(labels[j]))
+
+        print(f'  > Epoch {epoch} / {n_epochs} | Loss: {running_loss / len(TrainLoader)} ')
 
         # Bloc test
-        res = 0
+        resTest = 0
         for (x, z, y) in TestLoader:
             inputs, questions, labels = x.to(device), z.to(device), y.to(device)
             outputs = model(inputs, questions)
-            res += (int(outputs.argmax()) == int(labels))
-        print('| Accuracy: ' + str(res / n_images_test * 100) + '%')
+            resTest += (int(outputs.argmax()) == int(labels))
+        print('    Accuracy Train: ' + str(resTrain / n_images_train * 100) + '%')
+        print('    Accuracy Test: ' + str(resTest / n_images_test * 100) + '%')
 
         if epoch%10 == 0 :
             # Saving model each 10 epochs of training
