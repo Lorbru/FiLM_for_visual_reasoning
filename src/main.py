@@ -8,6 +8,7 @@ import json
 from torchvision import transforms
 from src.DataGenerator.DataGenerator import DataGenerator
 from Model.Architecture.FullNetwork import FullNetwork
+from Model.CreateDataset import CreateDataset
 from torch.nn.utils.rnn import pad_sequence
 
 from torch.utils.data import Dataset, DataLoader
@@ -58,7 +59,8 @@ def main():
     # Paramètres par défaut (si non ou mal configurés) :
     batch_size = 4                           # taille de batch
     nb_channels = 3                          # nombre de channels images (3 -> RGB)
-    n_images = 10                            # nombre d'images générées pour l'entrainement
+    n_images_train = 10                      # nombre d'images générées pour l'entrainement
+    n_images_test = 10                       # nombre d'images générées pour le test
     n_epochs = 3                             # nombre d'époques pour l'entrainement
     type_vocab = "completeQA"                # type de jeu de données choisi
 
@@ -69,8 +71,10 @@ def main():
             wrds = line.split('=')
             if wrds[0] == "QAData":
                 type_vocab = wrds[1]
-            elif wrds[0] == "nData":
-                n_images = int(wrds[1])
+            elif wrds[0] == "nDataTrain":
+                n_images_train = int(wrds[1])
+            elif wrds[0] == "nDataTest":
+                n_images_test = int(wrds[1])
             elif wrds[0] == "nEpochs":
                 n_epochs = int(wrds[1])
             elif wrds[0] == "batchSize":
@@ -85,7 +89,7 @@ def main():
     vocab_size = datagen.getVocabSize() + 1     # taille du vocabulaire
 
 
-    print(f"  > Number of data             : {n_images}")
+    print(f"  > Number of data             : {n_images_train}")
     print(f"  > Number of epochs           : {n_epochs}")
     print(f"  > Batch size                 : {batch_size}")
     print(f"  > Vocabulary size            : {vocab_size}")
@@ -94,36 +98,15 @@ def main():
 
     print("===========  DATA GENERATION AND PROCESSING   ===========")
     # Generation et processing des données
-    img_dataset = []
-    quest_dataset = []
-    ans_dataset = []
 
-    # processing data
-    transform = transforms.Compose([
-        transforms.ToTensor(),
-        transforms.Normalize((.5, .5, .5), (.5, .5, .5))
-    ])
-
-
-    for i in range(n_images):
-
-        # generation d'une donnée
-        quest, answer, img = datagen.buildData()
-        img.saveToPNG("src/Data/GeneratedImages/img_" + str(i) + ".png")
-
-        # processing (tenseur/normalisation/encodage question/batch dim)
-        quest_dataset.append(torch.tensor(datagen.getEncodedSentence(str(quest))))
-        ans_dataset.append(torch.tensor(datagen.getAnswerId(answer))) #.to(device))
-        img_dataset.append(i) #.unsqueeze(0).to(device))
-
-    # Padding pour une taille uniforme des phrases.
-    quest_dataset = pad_sequence(quest_dataset, batch_first=True) #.unsqueeze(0).to(device)
-
-    # Dataset
-    dataset = QAimgDataset(img_dataset, quest_dataset, ans_dataset, transform)
 
     # Train loader
+    dataset = CreateDataset(datagen, n_images_train, 'train')
     TrainLoader = torch.utils.data.DataLoader(dataset, batch_size=batch_size, shuffle=True)
+
+    # Test loader
+    dataset = CreateDataset(datagen, n_images_test, 'test')
+    TestLoader = torch.utils.data.DataLoader(dataset, batch_size=1, shuffle=False)
 
     print(f"  > Done\n")
 
@@ -161,12 +144,19 @@ def main():
             # Save loss 
             running_loss += loss.item()
 
-        print(f'  > Epoch {epoch} / {n_epochs} | Loss: {running_loss / len(TrainLoader)}')
+        print(f'  > Epoch {epoch} / {n_epochs} | Loss: {running_loss / len(TrainLoader)} ', end='')
+
+        # Bloc test
+        res = 0
+        for (x, z, y) in TestLoader:
+            inputs, questions, labels = x.to(device), z.to(device), y.to(device)
+            outputs = model(inputs, questions)
+            res += (int(outputs.argmax()) == int(labels))
+        print('| Accuracy: ' + str(res / n_images_test * 100) + '%')
+
         if epoch%10 == 0 :
             # Saving model each 10 epochs of training
             torch.save(model.state_dict(), "src/Data/mod"+str(epoch)+".pth")
-        running_loss = 0.0
-    
     
     print(f"\n===========            END PROCESS            ===========")
     
