@@ -6,7 +6,7 @@ import sys
 import json
 
 from torchvision import transforms
-from src.DataGenerator.DataGenerator import DataGenerator
+from DataGen.DataGenerator import DataGenerator
 from Model.Architecture.FullNetwork import FullNetwork
 from Model.CreateDataset import CreateDataset, QAimgDataset
 from torch.nn.utils.rnn import pad_sequence
@@ -39,7 +39,7 @@ def main():
     n_images_train = 10                      # nombre d'images générées pour l'entrainement
     n_images_test = 10                       # nombre d'images générées pour le test
     n_epochs = 3                             # nombre d'époques pour l'entrainement
-    type_vocab = "completeQA"                # type de jeu de données choisi
+    type_vocab = "data1"                     # type de jeu de données choisi
 
     # Lecture de configuration choisie
     with open('src/config.txt', 'r') as config:
@@ -60,10 +60,10 @@ def main():
     print(f"  > Question/Answer data       : '{type_vocab}'")
 
     # instanciation générateur de données et vocabulaire
-    datagen = DataGenerator(type_vocab)
+    datagen = DataGenerator(180, type_vocab)
 
     output_size = datagen.getAnswerSize()    # taille des sortie (nombre de réponses possibles)
-    vocab_size = datagen.getVocabSize() + 1     # taille du vocabulaire
+    vocab_size = datagen.getVocabSize()     # taille du vocabulaire
 
 
     print(f"  > Number of train data       : {n_images_train}")
@@ -146,9 +146,6 @@ def main():
     print(f"\n===========            END PROCESS            ===========")
     
     return 0
-    
-
-
 
 if __name__ == "__main__":
     main()
