@@ -66,7 +66,8 @@ def main():
     vocab_size = datagen.getVocabSize() + 1     # taille du vocabulaire
 
 
-    print(f"  > Number of data             : {n_images_train}")
+    print(f"  > Number of train data       : {n_images_train}")
+    print(f"  > Number of test data        : {n_images_test}")
     print(f"  > Number of epochs           : {n_epochs}")
     print(f"  > Batch size                 : {batch_size}")
     print(f"  > Vocabulary size            : {vocab_size}")
@@ -90,6 +91,8 @@ def main():
     print("===========           TRAINING LOOP           ===========")
     # Model
     model = FullNetwork(nb_channels, output_size, vocab_size).to(device)
+    #model.load_state_dict(torch.load("src/Data/mod_3x3_500000_60.pth"))
+    #model.eval()
 
     # Optimizer/Criterion
     optimizer = torch.optim.Adam(model.parameters(), lr=3e-5, weight_decay=1e-5)

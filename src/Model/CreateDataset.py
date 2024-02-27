@@ -15,14 +15,15 @@ from torch.utils.data import Dataset, DataLoader
 
 class QAimgDataset(Dataset):
 
-    def __init__(self, images, questions, answers, transform=None):
+    def __init__(self, images, questions, answers, type, transform=None):
         self.images = images
         self.questions = questions
         self.answers = answers
         self.transform = transform
+        self.type = type
 
     def get_image(self, num):
-        image = Image.open("src/Data/GeneratedImages/img_" + str(num) + ".png")
+        image = Image.open("src/Data/GeneratedImages/" + self.type + "/img_" + str(num) + ".png")
         return image
 
     def __len__(self):
@@ -61,6 +62,6 @@ def CreateDataset(datagen, n_images, type):
     quest_dataset = pad_sequence(quest_dataset, batch_first=True) #.unsqueeze(0).to(device)
 
     # Dataset
-    dataset = QAimgDataset(img_dataset, quest_dataset, ans_dataset, transform)
+    dataset = QAimgDataset(img_dataset, quest_dataset, ans_dataset, type, transform)
 
     return dataset
