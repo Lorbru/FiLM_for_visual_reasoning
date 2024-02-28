@@ -36,13 +36,10 @@
 ### A faire
 
 * Code
-  - Finir GRU/FiLM
+  - Avoir un truc fonctionnel
   - Streamlit
   - Commentaires
-  - Comparaison de figures
 * Présentation
-  - Diapos
-  - Texte (séparer le temps de parole)
 * Article
   - Relecture
   - Mise en forme en LateX
