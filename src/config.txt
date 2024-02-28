@@ -5,8 +5,8 @@ QAData -> Type de données et de problème posé :
 ============================================================================================================
 
 QAData=data3
-nDataTrain=1000
-nDataTest=100
-nEpochs=80
+nDataTrain=500
+nDataTest=1
+nEpochs=100
 batchSize=8
 imgDim=180
