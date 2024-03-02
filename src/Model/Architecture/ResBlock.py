@@ -38,9 +38,16 @@ class ResBlock(nn.Module):
         # dim2 --> nb_channels
         dim2 = gamma.size(1)
 
+        # print(gamma.shape, beta.shape)
+
         # redimensionnement pour le produit spatial avec chacun des channels des images
         gamma = gamma.view(dim1, dim2, 1, 1)
         beta = beta.view(dim1, dim2, 1, 1)
+
+        # gamma = torch.unsqueeze(torch.unsqueeze(gamma,2),3)
+        # beta = torch.unsqueeze(torch.unsqueeze(beta,2),3)
+
+        # print(gamma.shape, beta.shape)
 
         # FiLM
         y = gamma * x + beta

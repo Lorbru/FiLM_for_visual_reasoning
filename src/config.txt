@@ -7,6 +7,6 @@ QAData -> Type de données et de problème posé :
 QAData=data3
 nDataTrain=500
 nDataTest=1
-nEpochs=100
-batchSize=8
+nEpochs=20
+batchSize=64
 imgDim=180

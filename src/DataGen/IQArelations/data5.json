@@ -1,0 +1,17 @@
+{
+    "answers": ["etoile", "triangle", "rectangle", "ellipse", "rouge", "bleu", "vert", "blanc", "oui", "non", "0", "1", "2", "3"],
+        
+    "questions" : {
+        "position33": ["etoile", "triangle", "rectangle", "ellipse"],
+        "couleur33" : ["bleu", "rouge", "vert", "blanc"],
+        "presence" : ["oui", "non"],
+        "comptage": ["0", "1", "2", "3"]
+    },
+
+    "images" : {
+        "type": "33",
+        "noise": true,
+        "gradient": false
+    }
+
+}

@@ -1,0 +1,14 @@
+{
+    "answers": ["etoile", "triangle", "rectangle", "ellipse", "rouge", "bleu", "vert", "blanc"],
+    
+    "questions" : {
+        "position12": ["etoile", "triangle", "rectangle", "ellipse"],
+        "couleur12" : ["bleu", "rouge", "vert", "blanc"]
+    },
+
+    "images" : {
+        "type": "12",
+        "noise": false,
+        "gradient": false
+    }
+}
