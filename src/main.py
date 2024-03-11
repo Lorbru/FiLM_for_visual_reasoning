@@ -5,7 +5,7 @@ import os
 import sys
 import json
 
-from torchvision import transforms
+
 from DataGen.DataGenerator import DataGenerator
 from Model.Architecture.FullNetwork import FullNetwork
 from Model.CreateDataset import CreateDataset, QAimgDataset

@@ -6,8 +6,6 @@ import sys
 import json
 
 from torchvision import transforms
-from DataGen.DataGenerator import DataGenerator
-from .Architecture.FullNetwork import FullNetwork
 from torch.nn.utils.rnn import pad_sequence
 
 from torch.utils.data import Dataset, DataLoader
