@@ -49,13 +49,23 @@ class FullNetwork(nn.Module):
         x = self.pool1(x)
 
         # Evaluation de la question sur le GRU et génération de paramètres FiLM
-        FiLM_params = self.grunet(z).reshape(4, 2, -1, self.dcr)
+        FiLM_params = self.grunet(z).view(-1, 4, 2, self.dcr)
 
-        # Passage dans le ResNet
-        x = self.resBlock1(x, FiLM_params[0])
-        x = self.resBlock2(x, FiLM_params[1])
-        x = self.resBlock3(x, FiLM_params[2])
-        x = self.resBlock4(x, FiLM_params[3])
+        beta1 = FiLM_params[:, 0, 0, :]
+        gamma1 = FiLM_params[:, 0, 1, :]
+        x = self.resBlock1(x, beta1, gamma1)
+
+        beta2 = FiLM_params[:, 1, 0, :]
+        gamma2 = FiLM_params[:, 1, 1, :]
+        x = self.resBlock2(x, beta2, gamma2)
+
+        beta3 = FiLM_params[:, 2, 0, :]
+        gamma3 = FiLM_params[:, 2, 1, :]
+        x = self.resBlock3(x, beta3, gamma3)
+
+        beta4 = FiLM_params[:, 3, 0, :]
+        gamma4 = FiLM_params[:, 3, 1, :]
+        x = self.resBlock4(x, beta4, gamma4)
 
         # Sortie de convolution
         x = self.classifConv(x)

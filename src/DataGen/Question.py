@@ -1,5 +1,5 @@
 from .QuestionElement import QuestionElement
-from src.DataGen.ObjectsData.LoadData import Data
+from .ObjectsData.LoadData import Data
 import json
 import numpy as np
 
