@@ -73,8 +73,8 @@ qtype = st.selectbox(
 if qtype != None:
 
     direction = None
-    shape = 'aucune'
-    color = 'aucune'
+    shape = '*aucun*'
+    color = '*aucun*'
 
     if qtype == 0:
 
@@ -145,13 +145,15 @@ if qtype != None:
                 type="primary"
             )
 
-        img.saveToPNG("src/Data/GeneratedImages/streamlit/img_0.png")
+        rep = st.button(
+            "Calculer la réponse",
+        )
 
-        dataset = QAimgDataset([torch.tensor(datagen.getEncodedSentence(question)).to(device)], [0], [0], 'streamlit', transform)
-        Loader = torch.utils.data.DataLoader(dataset, batch_size=1, shuffle=False)
+        if rep :
+            z = torch.tensor(datagen.getEncodedSentence(question)).to(device)
+            x = transform(img.img)
 
-        for (x, _, z) in Loader :
-            y = int(model(x.to(device), z.unsqueeze(3).to(device)).argmax())
+            out = model(torch.unsqueeze(x, 0).to(device), torch.unsqueeze(z, 0).to(device))
+            y = int(out.argmax())
 
-        st.write("***Réponse*** : ", datagen.answers[y])
-
+            st.write("***Réponse*** : ", datagen.answers[y])
