@@ -5,15 +5,51 @@ import random
 
 class Shapes():
 
+    """
+    ============================================================================================
+    CLASS SHAPES : class used to draw images using the PIL library
+    
+    STATIC ATTRIBUTES : 
+        * DIM :int - default image dimension size 
+    
+    ATTRIBUTES :
+        * img :Image - the image
+        * dim :int - image dimension
+
+    METHODS : 
+        * drawEllipse(x, y, dx, dy, rotation, clr) : draw an ellipse on the image
+        * drawRect(x, y, dx, dy, rotation, clr) : draw a rectangle on the image
+        * drawStar(x, y, dx, dy, n, rotation, clr, random_noise) : draw a star on the image
+        * drawTriangle(x, y, dx, dy, rotation, clr, random_noise) : draw a triangle on the image
+        * randomGradient(): set a random background gradient on the image
+        * saveToPNG(directory) : save the image to a PNG file 
+    ============================================================================================
+    """
+
     DIM = 180
-    TILE_SIZE = DIM/6
 
     def __init__(self, dim=DIM):
+        """
+        -- __init__(dim=DIM) : constructor
+
+        In >> :
+            * dim :int       - img dimension (pixels height and width) 
+        """
         self.img = Image.new('RGB', (dim, dim), 'black')
         self.dim  = dim
         
     def drawEllipse(self, x, y, dx, dy, rotation=0, clr='blue'):
+        """
+        -- drawEllipse(x, y, dx, dy, rotation=0, clr='blue') : draw an ellipse on the image
 
+        In >> :
+            * x: int   - x North West pixel position
+            * y: int   - y North West pixel position
+            * dx: int   - size x
+            * dy: int   - size y
+            * rotation: int  - rotation of the figure (degree)
+            * clr: str  - color of the figure (if available in ObjectsData.json)
+        """
         # matrice de rotation
         phi = (rotation/180) * np.pi
         rot_matrix = np.array([
@@ -48,7 +84,17 @@ class Shapes():
         draw.polygon(pts, fill=clr)
 
     def drawRect(self, x, y, dx, dy, rotation=0, clr='blue'):
+        """
+        -- drawRect(x, y, dx, dy, rotation=0, clr='blue') : draw a rectangle on the image
 
+        In >> :
+            * x: int   - x North West pixel position
+            * y: int   - y North West pixel position
+            * dx: int   - size x
+            * dy: int   - size y
+            * rotation: int  - rotation of the figure (degree)
+            * clr: str  - color of the figure (if available in ObjectsData.json)
+        """
         # points standards
         pts_std = np.array([
             [x, y],
@@ -81,6 +127,19 @@ class Shapes():
         draw.polygon(pts, fill=clr)
 
     def drawStar(self, x, y, dx, dy, n=5, rotation=-np.pi/2, clr='blue', random_noise=False):
+        """
+        -- drawStar(x, y, dx, dy, n=5, rotation=-np.pi/2, clr='blue', random_noise) : draw a star on the image
+
+        In >> :
+            * x: int   - x North West pixel position
+            * y: int   - y North West pixel position
+            * dx: int   - size x
+            * dy: int   - size y
+            * n: int    - number of branches
+            * rotation: int  - rotation of the figure (radian)
+            * clr: str  - color of the figure (if available in ObjectsData.json)
+            * random_noise :bool - noise on the star 
+        """
         draw = ImageDraw.Draw(self.img)
         rx, ry = dx/2, dy/2
         thetas = np.linspace(0 + rotation, 2*np.pi + rotation, n+1)
@@ -95,6 +154,18 @@ class Shapes():
             draw.polygon(pts, fill=clr)
             
     def drawTriangle(self, x, y, dx, dy, rotation=-np.pi/2, clr='blue', random_noise=False):
+        """
+        -- drawStar(x, y, dx, dy, rotation=-np.pi/2, clr='blue', random_noise) : draw a triangle on the image
+
+        In >> :
+            * x: int   - x North West pixel position
+            * y: int   - y North West pixel position
+            * dx: int   - size x
+            * dy: int   - size y
+            * rotation: int  - rotation of the figure (radian)
+            * clr: str  - color of the figure (if available in ObjectsData.json)
+            * random_noise :bool - noise on the triangle
+        """
         draw = ImageDraw.Draw(self.img)
         rx, ry = dx/2, dy/2
         thetas = np.linspace(0 + rotation, 2*np.pi + rotation, 4)
@@ -108,6 +179,9 @@ class Shapes():
         draw.polygon(pts, fill=clr)
     
     def randomGradient(self):
+        """
+        -- randomGradient() : add random gradient on the image
+        """
         gradient = np.zeros((self.dim, self.dim, 3), dtype=np.uint8)
         color1 = np.random.randint(0, 256, size=3)
         color2 = np.random.randint(0, 256, size=3)
@@ -116,4 +190,10 @@ class Shapes():
         self.img.paste(Image.fromarray(gradient))
 
     def saveToPNG(self, directory):
+        """
+        -- saveToPNG(directory) : save image to a PNG file
+
+        In >> :
+            * directory :str - filename for saving the file
+        """
         self.img.save(directory)

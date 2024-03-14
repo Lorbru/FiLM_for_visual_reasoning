@@ -4,23 +4,68 @@ from .Question import Question
 from .Shapes import Shapes
 
 class ImgFactory():
+    
+    """
+    ============================================================================================
+    CLASS IMGFACTORY : class used to generate images.
+    
+    ATTRIBUTES : 
+        * dim :int       - dimension (pixels width/height) of the image
+        * imgType :str   - image type ("12" : 1*2, "33" : 3*3)
+        * gradient :bool - if we use a background random gradient
+        * noise :bool    - if we add random noise to our images
+
+    METHODS : 
+        * __init__(dim, imgType, gradient, noise) : constructor
+        * buildData(question, answer) : build an image which correspond to a question and an answer
+        * dataImg33(question, answer) : build a 3*3 image which correspond to a question and an answer
+        * dataImg12(question, answer) : build a 1*2 image which correspond to a question and an answer
+        * buildImg(colors, figures) : build an image with the colors and figures 
+    ============================================================================================
+    """
 
     def __init__(self, dim, imgType, gradient, noise):
+        """
+        -- __init__(dim, imgType, gradient, noise) : constructor
+
+        In >> :
+            * dim :int       - img dimension (pixels height and width) 
+            * imgType :str   - img type ("12"/"33")
+            * gradient :bool - if we add a random background gradient
+            * noise : bool   - if we add a random noise in our images
+        """
         self.dim = dim
         self.type = imgType
         self.gradient = gradient
         self.noise = noise
 
     def buildData(self, question, answer):
+        """
+        -- buildData(question, answer) : build an image which correspond to a question and an answer
 
+        In >> :
+            * question :Question - a question
+            * answer :str        - an answer (which makes sense according to the question)
+        
+        Out << :
+            img: Shapes - a generated image
+        """
         if (self.type == "33"):
             return self.dataImg33(question, answer)
         elif (self.type == "12"):
             return self.dataImg12(question, answer)
         
     def dataImg33(self, question, answer):
+        """
+        -- buildData(question, answer) : build a 3*3 image which correspond to a question and an answer
+
+        In >> :
+            * question :Question - a question (for 3*3 image only)
+            * answer :str        - an answer (which makes sense according to the question)
         
-        
+        Out << :
+            img: Shapes - a 3*3 generated image
+        """
         shapes = []
         colors = []
         qtype = question.type
@@ -106,7 +151,17 @@ class ImgFactory():
         return self.buildImg(colors, shapes)
 
     def dataImg12(self, question, answer):
+        """
+        -- buildData(question, answer) : build a 1*2 image which correspond to a question and an answer
+
+        In >> :
+            * question :Question - a question (for 1*2 image only)
+            * answer :str        - an answer (which makes sense according to the question)
         
+        Out << :
+            img: Shapes - a 1*2 generated image
+        """
+
         shapes = []
         colors = []
         qtype = question.type
@@ -191,10 +246,18 @@ class ImgFactory():
                 shapes.append(Data.randomFigure(without = ['figure']))
 
         return self.buildImg(colors, shapes)
-
-    
     
     def buildImg(self, colors, figures):
+        """
+        -- buildImg(colors, figures) : build an image with colors and figures
+
+        In >> :
+            * colors  :list[str]  - list of colors (9 for 3*3 image/2 for 1*2 image)
+            * figures :list[str]  - list of figures (9 for 3*3 image/2 for 1*2 image)
+        
+        Out << :
+            img: Shapes - generated image
+        """
 
         img = Shapes(self.dim)
 

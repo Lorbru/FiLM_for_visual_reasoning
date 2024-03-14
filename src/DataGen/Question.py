@@ -7,8 +7,40 @@ import numpy as np
 
 class Question():
         
+    """
+    ============================================================================================
+    CLASS QUESTION : class used to build question
+    
+    ATTRIBUTES : 
+        * type :str                     - question type (comptage, presence, position, ...)
+        * mainObject :QuestionElement   - first object
+        * secondObject :QuestionElement - second object (if needed)
+        * direction :str                - direction (if needed)
+        * formulation :int              - formulation type
+
+    METHODS : 
+        * __init__(dim, type, mainObject, secondObject, direction, formulation) : constructor
+        * __str__() : str of question
+
+    STATIC METHOD :
+        * buildQuestion(qtype, formulation) : build a new question depending on type and formulation
+    ============================================================================================
+    """
+
     def __init__(self, type, mainObject=None, secondObject:QuestionElement=None, direction=None, formulation=None):
 
+        """
+        -- __init__(type, mainObject=None, secondObject=None, direction=None, formulation=None) : constructor.
+        The question is built depending on the parameters we set. If some are 'None', the corresponding 
+        attribute is randomly selected.
+
+        In >> :
+            * type :str      - type of question
+            * mainObject :QuestionElement - first object
+            * secondObject :QuestionElement - second object
+            * direction :str - position 
+            * formulation :int - formulation type (between 0 and 2 inclusive)
+        """
         self.type = type
 
 
@@ -31,7 +63,16 @@ class Question():
     
     @staticmethod
     def buildQuestion(qtype, formulation=None):
+        """
+        -- buildQuestion(qtype :str, formulation=None :int) : build a random question depending on qtype
 
+        In >> :
+            * qtype :str - question type
+            * formulation :int - formulation type (between 0 and 2 inclusive)
+
+        Out << :
+            Question - generated question
+        """
         if (qtype == "position12") :
 
             direction = np.random.choice(["a droite", "a gauche"])
@@ -80,6 +121,12 @@ class Question():
         
 
     def __str__(self):
+        """
+        -- __str__ : str of the question 
+
+        Out << :
+            str: str of the question
+        """
         
         if self.type == 'presence' : 
             if self.formulation == 0 :
@@ -116,6 +163,4 @@ class Question():
     
         return None
     
-    def __repr__(self):
-        return self.__str__()
     

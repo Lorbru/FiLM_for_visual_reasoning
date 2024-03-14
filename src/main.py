@@ -1,10 +1,14 @@
-from ModelTrain import ModelTrain
-from ModelTest import ModelTest
+from Model.ModelTrain import ModelTrain
+from Model.ModelTest import ModelTest
 
 def main():
     print("#########################################################")
     print("###############      RUNNING PROJECT      ###############")
     print(f"#########################################################\n")
+
+    # Seed for data generation
+    GENERATOR_SEED = 21227063002
+
 
 
     # ModelTrain()

@@ -10,28 +10,47 @@ from .GRUNet import GRUNet
 
 class FullNetwork(nn.Module):
 
+    """
+    ============================================================================================
+    CLASS FULLNETWORK(nn.Module) : the full network for visual reasoning
+
+    METHODS : 
+        * __init__(num_channels, output_size, vocab_size, dcr=128, dps=14): constructor
+        * forward(x, z) : forward 
+    ============================================================================================
+    """
+
     def __init__(self, num_channels, output_size, vocab_size, dcr=128, dps=14):
-        
+        """
+        -- __init__(num_channels, output_size, vocab_size, dcr=128, dps=14) : constructor.
+
+        In >> :
+            * num_channels: int   - number of channels for the input image (RGB = 3)
+            * output_size: int    - output size for the classification
+            * vocab_size :int     - vocabulary size for the GRU network
+            * dcr :int - Dimension Channels Resblock
+            * dps :int - Dimension Pooling Size out
+        """
         super().__init__()
 
-        # paramètres du modèle
+        # parameters
         self.channels = num_channels
         self.outSize = output_size
         self.dcr = dcr
         self.dps = dps
 
-        # Première étape de convolution
+        # first convolution
         self.conv1 = nn.Conv2d(self.channels, dcr, 3)
         self.pool1 = nn.AdaptiveMaxPool2d((dps, dps))
-        # 128 images 14*14 par défaut
+        # 128 features,  14*14 
 
-        # Resblocks
+        # 4 Resblocks
         self.resBlock1 = ResBlock(dcr)
         self.resBlock2 = ResBlock(dcr)
         self.resBlock3 = ResBlock(dcr)
         self.resBlock4 = ResBlock(dcr)
 
-        # Couche MLP
+        # MLP
         self.classifConv = nn.Conv2d(dcr, 512, 1)
         self.classifPool = nn.MaxPool2d(1)
         self.flatten = nn.Flatten()
@@ -43,14 +62,22 @@ class FullNetwork(nn.Module):
         self.grunet = GRUNet(vocab_size, 2 * 4 * dcr)
 
     def forward(self, x, z):
+        """
+        -- forward(x, z) : forward
+
+        In >> :
+            * x: image - the main input
+            * z: encoded question - the context
+        """
         
-        # Première étape de convolution
+        # First convolution + polling
         x = self.conv1(x)
         x = self.pool1(x)
 
-        # Evaluation de la question sur le GRU et génération de paramètres FiLM
+        # FiLM parameters generator using GRU network
         FiLM_params = self.grunet(z).view(-1, 4, 2, self.dcr)
 
+        # FiLM and resblocks layers
         beta1 = FiLM_params[:, 0, 0, :]
         gamma1 = FiLM_params[:, 0, 1, :]
         x = self.resBlock1(x, beta1, gamma1)
@@ -67,11 +94,11 @@ class FullNetwork(nn.Module):
         gamma4 = FiLM_params[:, 3, 1, :]
         x = self.resBlock4(x, beta4, gamma4)
 
-        # Sortie de convolution
+        # Last convolution
         x = self.classifConv(x)
         x = self.classifPool(x)
 
-        # Multi layer perceptron pour la classification finale
+        # Multi layer perceptron for final classification
         x = self.flatten(x)
         x = self.classif_l1(x)
         x = self.activation(x)
@@ -79,6 +106,3 @@ class FullNetwork(nn.Module):
         x = self.activation(x)
 
         return self.activation_out(self.classif_out(x))
-    
-
-
