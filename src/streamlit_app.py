@@ -50,7 +50,7 @@ transform = transforms.Compose([
 
 # Model
 model = FullNetwork(nb_channels, output_size, vocab_size).to(device)
-model.load_state_dict(torch.load("src/Data/mod20.pth"))
+model.load_state_dict(torch.load("src/Data/mod_best_data3.pth"))
 model.eval()
 
 ########################################################################################################################
@@ -129,31 +129,33 @@ if qtype != None:
             [int_to_formulation(x) for x in [0, 1, 2]]
         )
 
-        _, _, img = datagen.buildData()
 
         col1, col2 = st.columns(2)
 
+
         with col1:
-            st.image(
-            img.img,
-            caption = "Votre image"
-            )
 
-        with col2:
-            st.button(
-                "Nouvelle image aléatoire",
-                type="primary"
-            )
+            # if st.button("Nouvelle image aléatoire", type='primary') :
+            #     _, _, img = datagen.buildData()
 
-        rep = st.button(
-            "Calculer la réponse",
-        )
 
-        if rep :
-            z = torch.tensor(datagen.getEncodedSentence(question)).to(device)
-            x = transform(img.img)
+            if st.button("Calculer la réponse sur une image aléatoire", type='primary') :
+                _, _, img = datagen.buildData()
 
-            out = model(torch.unsqueeze(x, 0).to(device), torch.unsqueeze(z, 0).to(device))
-            y = int(out.argmax())
+                z = torch.tensor(datagen.getEncodedSentence(question)).to(device)
+                x = transform(img.img)
 
-            st.write("***Réponse*** : ", datagen.answers[y])
+                out = model(torch.unsqueeze(x, 0).to(device), torch.unsqueeze(z, 0).to(device))
+                y = int(out.argmax())
+
+                st.write("***Réponse*** : ", datagen.answers[y])
+
+                with col2:
+                    st.image(
+                        img.img,
+                        caption="Votre image"
+                    )
+
+
+
+

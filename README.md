@@ -15,3 +15,8 @@
 
 * Overleaf :
   - https://www.overleaf.com/2972594869wqghkcczkzgs#df7577
+
+A faire :
+- Finir le rapport
+- Commenter le code
+- *Ajouter nouvelles fonctionnalités*
