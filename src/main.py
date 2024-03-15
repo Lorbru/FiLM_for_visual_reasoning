@@ -1,19 +1,30 @@
 from Model.ModelTrain import ModelTrain
 from Model.ModelTest import ModelTest
+from Analysis import FiLMGeneratorPCA
 import random
+import numpy as np
+
 
 def main():
     print("#########################################################")
     print("###############      RUNNING PROJECT      ###############")
     print(f"#########################################################\n")
 
-    # Seed for data generation
-    GENERATOR_SEED = 21227063002
-    random.seed(GENERATOR_SEED)
+
+    
+    # Seed for reproduction
+    SEED = 42
+    random.seed(SEED)
+    np.random.seed(SEED)
+    print(f"  > Setting project SEED : {SEED}")
 
     # ModelTrain()
+    
     # ModelTest("mod_best_data3")
     
+    FiLMGeneratorPCA("mod_best_data3")
+
+
     print(f"\n===========            END PROCESS            ===========")
     
     return 0

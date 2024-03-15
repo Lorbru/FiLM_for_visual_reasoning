@@ -14,6 +14,7 @@ from sklearn.decomposition import PCA
 
 def FiLMGeneratorPCA(model_name):
 
+    print(f"  > Loading model '{model_name}.pth' and data structure")
     # Lecture de configuration choisie
     with open('src/config.txt', 'r') as config:
         for line in config.readlines():
@@ -39,6 +40,8 @@ def FiLMGeneratorPCA(model_name):
     model.load_state_dict(torch.load("src/Data/"+model_name+".pth", map_location={'cuda:0': 'cpu'}))
     model.eval()
 
+    
+
     # Initialisation liste des paramètres gamma/beta
     gamma1list = []
     beta1list = []
@@ -55,6 +58,8 @@ def FiLMGeneratorPCA(model_name):
     # types de questions possibles pour notre modele
     qtypes = datagen.qtypes
     n_points = 100
+
+    print(f"  > Computing {n_points} FiLM parameters for each question type")
 
     for q in qtypes :
         for n_try in range(n_points):
@@ -81,6 +86,8 @@ def FiLMGeneratorPCA(model_name):
 
     gammaList = [gamma1list, gamma2list, gamma3list, gamma4list]
     betaList = [beta1list, beta2list, beta3list, beta4list]
+
+    print(f"  > PCA and plotting points")
 
     fig, axes = plt.subplots(2, 2, figsize=(10, 10))
     cmap = matplotlib.colormaps.get_cmap("rainbow")
@@ -112,7 +119,3 @@ def FiLMGeneratorPCA(model_name):
     plt.subplots_adjust(hspace=0.5, wspace=0.5)
     fig.savefig(f"src/Graphs/FiLM_PCA_{model_name}.png")
     plt.show()
-
-
-        
-FiLMGeneratorPCA("mod_best_data3")
