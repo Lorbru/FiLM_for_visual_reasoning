@@ -59,7 +59,7 @@ def ModelTest(model_name):
     # Generation et processing des données
 
     # Test loader
-    dataset = CreateDataset(datagen, n_images_test, 'test')
+    dataset, originData = CreateDataset(datagen, n_images_test, 'test')
     TestLoader = torch.utils.data.DataLoader(dataset, batch_size=1, shuffle=False)
 
     print(f"  > Done\n")
@@ -70,13 +70,13 @@ def ModelTest(model_name):
     model.load_state_dict(torch.load("src/Data/"+model_name+".pth", map_location={'cuda:0': 'cpu'}))
     model.eval()
 
-    # Optimizer/Criterion
-    optimizer = torch.optim.Adam(model.parameters(), lr=3e-5, weight_decay=1e-5)
-    criterion = torch.nn.CrossEntropyLoss()
-
     resTest = 0
     for (x, z, y) in TestLoader:
+
         inputs, questions, labels = x.to(device), z.to(device), y.to(device)
         outputs = model(inputs, questions)
         resTest += (int(outputs.argmax()) == int(labels))
+
+
+
     print('    Accuracy Test: ' + str(resTest / n_images_test * 100) + '%')
