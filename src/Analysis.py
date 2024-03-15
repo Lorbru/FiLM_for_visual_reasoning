@@ -68,12 +68,12 @@ def FiLMGeneratorPCA(model_name):
             gamma1list.append(FiLM_params[:, 0, 1, :].detach().numpy().flatten())
 
             # gamma/beta resblock 2
-            beta2list.append(FiLM_params[:, 0, 0, :].detach().numpy().flatten())
-            gamma2list.append(FiLM_params[:, 0, 1, :].detach().numpy().flatten())
+            beta2list.append(FiLM_params[:, 1, 0, :].detach().numpy().flatten())
+            gamma2list.append(FiLM_params[:, 1, 1, :].detach().numpy().flatten())
 
             # gamma/beta resblock 3
-            beta3list.append(FiLM_params[:, 0, 0, :].detach().numpy().flatten())
-            gamma3list.append(FiLM_params[:, 0, 1, :].detach().numpy().flatten())
+            beta3list.append(FiLM_params[:, 2, 0, :].detach().numpy().flatten())
+            gamma3list.append(FiLM_params[:, 2, 1, :].detach().numpy().flatten())
 
             # gamma/beta resblock 4
             beta4list.append(FiLM_params[:, 3, 0, :].detach().numpy().flatten())
