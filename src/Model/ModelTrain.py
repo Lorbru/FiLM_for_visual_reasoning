@@ -74,8 +74,6 @@ def ModelTrain(save=True, test=True):
     print("===========           TRAINING LOOP           ===========")
     # Model
     model = FullNetwork(nb_channels, output_size, vocab_size).to(device)
-    # model.load_state_dict(torch.load("src/Data/mod_3x3_500000_60.pth"))
-    # model.eval()
 
     # Optimizer/Criterion
     optimizer = torch.optim.Adam(model.parameters(), lr=3e-5, weight_decay=1e-5)

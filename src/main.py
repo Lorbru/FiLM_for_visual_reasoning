@@ -18,11 +18,11 @@ def main():
     np.random.seed(SEED)
     print(f"  > Setting project SEED : {SEED}")
 
-    # ModelTrain()
+    ModelTrain()
     
     # ModelTest("mod_best_data3")
     
-    FiLMGeneratorPCA("mod_best_data3")
+    # FiLMGeneratorPCA("mod_best_data3")
 
 
     print(f"\n===========            END PROCESS            ===========")

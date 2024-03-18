@@ -49,7 +49,7 @@ def CreateDataset(datagen, n_images, type):
 
         # generation d'une donnée
         quest, answer, img = datagen.buildData()
-        #img.saveToPNG("src/Data/GeneratedImages/" + type + "/img_" + str(i) + ".png")
+        img.saveToPNG("src/Data/GeneratedImages/" + type + "/img_" + str(i) + ".png")
 
         # processing (tenseur/normalisation/encodage question/batch dim)
         quest_dataset.append(torch.tensor(datagen.getEncodedSentence(str(quest))))
