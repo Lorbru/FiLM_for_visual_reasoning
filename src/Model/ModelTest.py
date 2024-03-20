@@ -5,6 +5,12 @@ from Model.Architecture.FullNetwork import FullNetwork
 from Model.CreateDataset import CreateDataset
 
 def ModelTest(model_name):
+    """
+    -- ModelTest(model_name) : Test a model
+
+    In >> :
+        * model_name :str  - Name of the model
+    """
 
     print("=========== CHECKING IF NVIDIA CUDA AVAILABLE ===========")
 
