@@ -65,7 +65,7 @@ def ModelTest(model_name):
     # Generation et processing des données
 
     # Test loader
-    dataset, originData = CreateDataset(datagen, n_images_test, 'test')
+    dataset = CreateDataset(datagen, n_images_test, 'test')
     TestLoader = torch.utils.data.DataLoader(dataset, batch_size=1, shuffle=False)
 
     print(f"  > Done\n")
