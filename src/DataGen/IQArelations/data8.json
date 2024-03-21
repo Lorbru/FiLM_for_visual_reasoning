@@ -11,7 +11,7 @@
     "images" : {
         "type": "33",
         "noise": true,
-        "gradient": false
+        "gradient": true
     }
 
 }

@@ -4,7 +4,15 @@ from DataGen.DataGenerator import DataGenerator
 from Model.Architecture.FullNetwork import FullNetwork
 from Model.CreateDataset import CreateDataset
 
-def ModelTrain(save=True, test=True):
+def ModelTrain(save=True, test=True, model_name=None):
+    """
+    -- ModelTrain(save=True, test=True, model_name=None) : Train a model
+
+    In >> :
+        * save :bool       - Save a model every 10 epochs
+        * test :bool       - Add a test of accuracy
+        * model_name :str  - Start the training from an existing model, create a new one otherwise
+    """
 
     print("=========== CHECKING IF NVIDIA CUDA AVAILABLE ===========")
 
@@ -74,8 +82,9 @@ def ModelTrain(save=True, test=True):
     print("===========           TRAINING LOOP           ===========")
     # Model
     model = FullNetwork(nb_channels, output_size, vocab_size).to(device)
-    # model.load_state_dict(torch.load("src/Data/mod_3x3_500000_60.pth"))
-    # model.eval()
+
+    if model_name != None :
+        model.load_state_dict(torch.load("src/Data/"+model_name+".pth", map_location={'cuda:0': 'cpu'}))
 
     # Optimizer/Criterion
     optimizer = torch.optim.Adam(model.parameters(), lr=3e-5, weight_decay=1e-5)

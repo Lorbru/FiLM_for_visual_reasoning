@@ -5,6 +5,12 @@ from Model.Architecture.FullNetwork import FullNetwork
 from Model.CreateDataset import CreateDataset
 
 def ModelTest(model_name):
+    """
+    -- ModelTest(model_name) : Test a model
+
+    In >> :
+        * model_name :str  - Name of the model
+    """
 
     print("=========== CHECKING IF NVIDIA CUDA AVAILABLE ===========")
 
@@ -59,7 +65,7 @@ def ModelTest(model_name):
     # Generation et processing des données
 
     # Test loader
-    dataset, originData = CreateDataset(datagen, n_images_test, 'test')
+    dataset = CreateDataset(datagen, n_images_test, 'test')
     TestLoader = torch.utils.data.DataLoader(dataset, batch_size=1, shuffle=False)
 
     print(f"  > Done\n")
