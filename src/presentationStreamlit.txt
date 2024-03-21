@@ -1,0 +1,8 @@
+
+
+What are we talking about ?
+
+In deep learning, we sometimes need to interpret our data in a certain context. This is particularly the case when we want to do multi-task learning and give our models the ability to learn, or generate content under the context of a given task. 
+Moreover, this approach has application that are very similar to very concrete problems: the fact that we can interpret images differently depending on a sound context, or a different question applied to the image, is in reality already a conditioning problem.
+We'll look at this last concrete example to understand the interest of feature-wise transformations in deep learning: given an input image x, and a question z, how can we answer our image as accurately as possible under the context of the question asked?
+A simple concatenation of our input and the context posed could appear to be a possible first solution, or we could simply consider the context and the input image as data in their own right in our model. But this approach makes the implicit assumption that we need our context where our network begins, which cannot be verified in practice. What's more, how can we simply manage data with different formats? An image is an assocation of three layers (RGB), containing local information extracted by convolutional networks.
