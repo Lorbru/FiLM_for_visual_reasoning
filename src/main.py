@@ -31,8 +31,6 @@ def main():
     
     # FiLMGeneratorPCA("mod_best_data3")
 
-    print(datagen.getEncodedSentence("De quelle couleur troll figure a droite ?", True))
-
     print(f"\n===========            END PROCESS            ===========")
     
     return 0
