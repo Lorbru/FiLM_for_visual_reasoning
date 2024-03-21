@@ -4,6 +4,8 @@ from Analysis import FiLMGeneratorPCA
 import random
 import numpy as np
 from DataGen.DataGenerator import DataGenerator
+import os
+import gdown
 
 def main():
     print("#########################################################")
@@ -17,14 +19,17 @@ def main():
     random.seed(SEED)
     np.random.seed(SEED)
     print(f"  > Setting project SEED : {SEED}")
+    
+    if os.path.isfile('src/Data/mod_best_data3.pth') == False :
+        url = 'https://drive.google.com/file/d/13mYfOEcDRQ_yscapmz4Z3NaNL34qfTkh/view?usp=sharing'
+        output = 'src/Data/mod_best_data3.pth'
+        gdown.download(url, output, quiet=False, fuzzy=True)
 
     # ModelTrain(model_name="mod_best_data7")
     
     # ModelTest("mod_best_data7")
     
     # FiLMGeneratorPCA("mod_best_data3")
-
-    datagen = DataGenerator(180, "data3")
 
     print(datagen.getEncodedSentence("De quelle couleur troll figure a droite ?", True))
 
