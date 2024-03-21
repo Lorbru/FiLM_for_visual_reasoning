@@ -9,7 +9,7 @@ from DataGen.Question import Question
 from DataGen.QuestionElement import QuestionElement
 
 if torch.cuda.is_available():
-    print("  > set device on nvidia-cuda")
+    print(f"  > set device on nvidia-cuda\n")
     device = 'cuda'
 else:
     print(f"  > nvidia cuda not available : set device on cpu\n")
@@ -49,8 +49,8 @@ transform = transforms.Compose([
 ])
 
 # Model
-model = FullNetwork(nb_channels, output_size, vocab_size).to(device)
-model.load_state_dict(torch.load("src/Data/mod_best_data3.pth"))
+model = FullNetwork(nb_channels, output_size, vocab_size)
+model.load_state_dict(torch.load("src/Data/mod_best_data3.pth", map_location=torch.device(device)))
 model.eval()
 
 ########################################################################################################################

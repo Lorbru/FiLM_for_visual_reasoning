@@ -32,12 +32,13 @@ class BuildVocab():
         with open(f'src/DataGen/Vocabulary/vocabulary.json', 'r') as f:
             self.vocab = json.load(f)
 
-    def encode_sentence(self, sentence):
+    def encode_sentence(self, sentence, check_words=False):
         """
-        -- encode_sentence(sentence) : Encoding a sentence for the GRU network
+        -- encode_sentence(sentence, check_words=False) : Encoding a sentence for the GRU network
 
         In >> :
             * sentence :str - sentence in french natural language
+            * check_words: bool - if we check and extract known words of the sentence
 
         Out << :
             * list[int] - encoded sentence
@@ -45,7 +46,19 @@ class BuildVocab():
         sentence = sentence.replace("'", " ")
         sentence = sentence.replace("-", " ")
         words = sentence.split()
+        print(words)
+        if (check_words):
+            print("########## COUCOU")
+            knownWords = []
+            for word in words :
+                if word in self.vocab.keys():
+                    print(self.vocab.keys())
+                    knownWords.append(word)
+            words = knownWords
+            print(words)
+
         return [self.vocab[word] for word in words]
+    
     
     def vocabSize(self):
         """

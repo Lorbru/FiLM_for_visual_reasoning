@@ -33,7 +33,7 @@ def FiLMGeneratorPCA(model_name):
 
     # Chargement du modèle
     datagen = DataGenerator(180, type_vocab)
-    output_size = datagen.getAnswerSize()  # taille des sortie (nombre de réponses possibles)
+    output_size = datagen.getAnswerSize()  # taille des sorties (nombre de réponses possibles)
     vocab_size = datagen.getVocabSize()  # taille du vocabulaire
 
     model = FullNetwork(3, output_size, vocab_size)
@@ -92,7 +92,11 @@ def FiLMGeneratorPCA(model_name):
     fig, axes = plt.subplots(2, 2, figsize=(10, 10))
     cmap = matplotlib.colormaps.get_cmap("rainbow")
 
-    pca = PCA(n_components=1)
+    pcaGamma = PCA(n_components=1)
+
+    pcaBeta = PCA(n_components=1)
+
+    PCAdataframe = pd.DataFrame()
 
     for i in range(4):
 
@@ -104,10 +108,10 @@ def FiLMGeneratorPCA(model_name):
         gamma_df = pd.DataFrame(np.array(gammaList[i]))
         beta_df = pd.DataFrame(np.array(betaList[i]))
 
-        pca_gamma = pca.fit_transform(gamma_df)
+        pca_gamma = pcaGamma.fit_transform(gamma_df)
         pca_gamma = pd.DataFrame(pca_gamma, columns=['PC1'])
 
-        pca_beta = pca.fit_transform(beta_df)
+        pca_beta = pcaBeta.fit_transform(beta_df)
         pca_beta = pd.DataFrame(pca_beta, columns=['PC1'])
         
         for j, q in enumerate(qtypes) : 
@@ -116,6 +120,10 @@ def FiLMGeneratorPCA(model_name):
 
         axes[i//2, i%2].legend()
 
+        PCAdataframe = pd.concat([PCAdataframe, pca_gamma, pca_beta], axis=1)
+
     plt.subplots_adjust(hspace=0.5, wspace=0.5)
     fig.savefig(f"src/Graphs/FiLM_PCA_{model_name}.png")
     plt.show()
+
+    return PCAdataframe

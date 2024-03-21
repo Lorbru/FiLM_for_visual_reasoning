@@ -99,7 +99,7 @@ class DataGenerator():
         """
         return self.vocab.vocabSize()
     
-    def getEncodedSentence(self, sentence):
+    def getEncodedSentence(self, sentence, check_words=False):
         """
         -- getEncodedSentence(sentence :str) : get encoded sentence for the GRU network
 
@@ -109,5 +109,5 @@ class DataGenerator():
         Out << :
             ndarray(int) - encoded sentence
         """
-        return self.vocab.encode_sentence(sentence)
+        return self.vocab.encode_sentence(sentence, check_words)
     
