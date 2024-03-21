@@ -18,9 +18,9 @@ def main():
     np.random.seed(SEED)
     print(f"  > Setting project SEED : {SEED}")
 
-    ModelTrain()
+    ModelTrain(model_name="mod_best_data7")
     
-    # ModelTest("mod_best_data3")
+    # ModelTest("mod_best_data7")
     
     # FiLMGeneratorPCA("mod_best_data3")
 

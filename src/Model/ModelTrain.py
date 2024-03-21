@@ -85,7 +85,6 @@ def ModelTrain(save=True, test=True, model_name=None):
 
     if model_name != None :
         model.load_state_dict(torch.load("src/Data/"+model_name+".pth", map_location={'cuda:0': 'cpu'}))
-        model.eval()
 
     # Optimizer/Criterion
     optimizer = torch.optim.Adam(model.parameters(), lr=3e-5, weight_decay=1e-5)
