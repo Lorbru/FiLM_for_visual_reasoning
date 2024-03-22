@@ -1,22 +1,36 @@
-# ProjetDL
+# Feature wise transformations : FiLM for visual reasoning
 
-## Liens
+## Link :
+https://distill.pub/2018/feature-wise-transformations/
+https://arxiv.org/pdf/1709.07871.pdf
+https://github.com/ethanjperez/film
 
-### Sources
+## Project : 
 
-* Blog :
-  - https://distill.pub/2018/feature-wise-transformations/
-  
-* Article :
-  - https://arxiv.org/pdf/1709.07871.pdf
- 
-* Github :
-  - https://github.com/ethanjperez/film
+This repository is a reproduction of FiLM architecture for neural network described in this paper : https://arxiv.org/pdf/1709.07871.pdf
 
-* Overleaf :
-  - https://www.overleaf.com/2972594869wqghkcczkzgs#df7577
+The task of our model is to answer questions about images with the best accuracy. We use a data generator implemented in DataGen folder which create (question, answer, image) triplets for the training of our models : 
 
-A faire :
-- Finir le rapport
-- Commenter le code
-- *Ajouter nouvelles fonctionnalités*
+- Images are a set of 2D shapes in the a 3*3 grid
+- Questions are in french language speaking. We ask questions about position/color/presence.
+- Answers are a list of possible answers depending on the question : yes, no, red, ...
+
+The model training and architecture is implemented in Model folder.
+Running main for a little training about few datas. You can change parameters in config.txt.
+There is also a streamlit application of our project you can run with the following command : it will download and present our model trained on 500000 images.
+
+```
+python -m streamlit run src/streamlit_demo.py
+```
+
+Check also you have all the required libraries : 
+
+```
+pip install streamlit
+pip install torch
+pip install torchvisions
+pip install PIL
+pip install unidecode
+pip install gdown
+```
+
