@@ -34,3 +34,7 @@ pip install unidecode
 pip install gdown
 ```
 
+![image](https://github.com/Lorbru/FiLM_for_visual_reasoning/assets/135026945/ef214441-fa4b-477b-a610-973038bb9bc3)
+
+![image](https://github.com/Lorbru/FiLM_for_visual_reasoning/assets/135026945/83c96f40-901d-4fbb-bad0-3991b9aea8e0)
+
