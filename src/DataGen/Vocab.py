@@ -46,16 +46,12 @@ class BuildVocab():
         sentence = sentence.replace("'", " ")
         sentence = sentence.replace("-", " ")
         words = sentence.split()
-        print(words)
         if (check_words):
-            print("########## COUCOU")
             knownWords = []
             for word in words :
                 if word in self.vocab.keys():
-                    print(self.vocab.keys())
                     knownWords.append(word)
             words = knownWords
-            print(words)
 
         return [self.vocab[word] for word in words]
     

@@ -3,6 +3,7 @@ import numpy as np
 import torch
 import pandas as pd
 import matplotlib
+from PIL import Image
 
 from Model.Architecture.FullNetwork import FullNetwork
 from DataGen.DataGenerator import DataGenerator
@@ -10,6 +11,9 @@ from Model.Architecture.FullNetwork import FullNetwork
 from Model.CreateDataset import CreateDataset
 from DataGen.Question import Question
 from sklearn.decomposition import PCA
+from torchvision import transforms
+from torch.nn.utils.rnn import pad_sequence
+from torch.utils.data import Dataset, DataLoader
 
 
 def FiLMGeneratorPCA(model_name):

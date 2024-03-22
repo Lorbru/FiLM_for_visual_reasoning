@@ -51,16 +51,18 @@ class QuestionElement():
             if self.color != "":
                 clr = " " + Data.ObjData["color"][self.color][genre + "P"]
             return shape + clr
-        else : 
+        else :
             num = "des"
-            if self.count != 1 : 
-                shape = Data.ObjData["shape"][self.shape]["plural"]
-                if self.color != "":
-                    clr = " " + Data.ObjData["color"][self.color][genre + "P"]
-            else :
-                shape = Data.ObjData["shape"][self.shape]["singul"]
-                if self.color != "":
-                    clr = " " + Data.ObjData["color"][self.color][genre]
+            #if self.count > 1 : 
+            shape = Data.ObjData["shape"][self.shape]["plural"]
+            if self.color != "":
+                clr = " " + Data.ObjData["color"][self.color][genre + "P"]
+                
+            #else :
+            #    shape = Data.ObjData["shape"][self.shape]["singul"]
+            #    if self.color != "":
+            #        clr = " " + Data.ObjData["color"][self.color][genre]
+            #    num = ""
             return num + " " + shape + clr
 
     @staticmethod

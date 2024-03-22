@@ -65,8 +65,6 @@ def ModelTrain(save=True, test=True, model_name=None):
     print(f"  > Number of possible answers : {output_size}\n")
 
     print("===========  DATA GENERATION AND PROCESSING   ===========")
-    # Generation et processing des données
-
 
     # Train loader
     dataset = CreateDataset(datagen, n_images_train, 'train')
