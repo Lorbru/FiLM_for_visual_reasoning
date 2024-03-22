@@ -16,7 +16,7 @@ The task of our model is to answer questions about images with the best accuracy
 - Answers are a list of possible answers depending on the question : yes, no, red, ...
 
 The model training and architecture is implemented in Model folder.
-Running main for a little training about few datas. You can change parameters in config.txt.
+Running main will train a model on a little set of data. You can change parameters in config.txt.
 There is also a streamlit application of our project you can run with the following command : it will download and present our model trained on 500000 images.
 
 ```
