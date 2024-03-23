@@ -308,8 +308,6 @@ class ImgFactory():
                     
                     # bruit aléatoire
                     if (self.noise) :
-                        pos = pos + (unit/2) * .25 * (np.random.rand(2) - np.array([.5, .5]))
-                        dx, dy = np.array([dx, dy]) + (unit/2) * .25 * (np.random.rand(2) - np.array([.5, .5]))
                         color = color + np.random.randint(-min(20, min(color)), min(20, 255-max(color)), 3)
                         rot *= np.random.rand()
 
@@ -321,9 +319,9 @@ class ImgFactory():
                     elif(fig == "rectangle"):
                         img.drawRect(x, y, .75*dx, .75*dy, rot, color)
                     elif(fig == "etoile"):
-                        img.drawStar(x, y, dx, dy, 5, rot, color, self.noise)
+                        img.drawStar(x, y, dx, dy, 5, rot, color, False)
                     elif(fig == "triangle"):
-                        img.drawTriangle(x, y, dx, dy, rotation=rot, random_noise=self.noise, clr=color)
+                        img.drawTriangle(x, y, dx, dy, rotation=rot, random_noise=False, clr=color)
 
         return img
 

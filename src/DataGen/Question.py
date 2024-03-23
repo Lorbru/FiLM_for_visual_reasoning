@@ -57,7 +57,7 @@ class Question():
         self.secondObject = secondObject
 
         if formulation == None : 
-            formulation = np.random.randint(0, 3)
+            formulation = np.random.randint(0, 4)
         self.formulation = formulation
 
     
@@ -115,7 +115,7 @@ class Question():
             if (mainObject.shape == 'figure' and mainObject.color == ''):
                 mainObject.color = Data.randomColor()
 
-            formulation = np.random.randint(0, 3)
+            formulation = np.random.randint(0, 4)
 
             return Question(type=qtype, mainObject=mainObject, formulation=formulation)
         
@@ -130,35 +130,43 @@ class Question():
         
         if self.type == 'presence' : 
             if self.formulation == 0 :
-                return "Y a t-il " + self.mainObject.printObject(False) + " ?"
+                return "y a t-il " + self.mainObject.printObject(False) + " ?"
             elif self.formulation == 1 :
-                return "Peut-on voir " + self.mainObject.printObject(False) + " ?"
+                return "peut-on voir " + self.mainObject.printObject(False) + " ?"
             elif self.formulation == 2 :
-                return "Est-ce qu'il y a " + self.mainObject.printObject(False) + " ?"
+                return "est-ce qu'il y a " + self.mainObject.printObject(False) + " ?"
+            elif self.formulation == 3 :
+                return "il y a " + self.mainObject.printObject(False) + " ?"
         
         elif self.type == 'comptage' :
             if (self.formulation == 0):
-                return "Combien y a t-il " + self.mainObject.printObject(True) + " ?"
+                return "combien y a t il " + self.mainObject.printObject(True) + " ?"
             elif (self.formulation == 1):
-                return "Quel est le nombre " + self.mainObject.printObject(True) + " ?"
+                return "quel est le nombre " + self.mainObject.printObject(True) + " ?"
             elif (self.formulation == 2):
-                return "Combien " + self.mainObject.printObject(True) + " peut-on observer ?"
+                return "combien " + self.mainObject.printObject(True) + " peut-on observer ?"
+            elif (self.formulation == 3):
+                return "il y a combien " + self.mainObject.printObject(True) + " ?"
 
         elif self.type == 'position12' or self.type == 'position33': 
             if (self.formulation == 0):
-                return "Quelle figure se trouve " + self.direction + " ?"
+                return "quelle figure se trouve " + self.direction + " ?"
             elif (self.formulation == 1):
-                return "Que peut-on voir " + self.direction + " ?"
+                return "que peut-on voir " + self.direction + " ?"
             elif (self.formulation == 2):
-                return "Qu'y a t-il " + self.direction + " ?"
+                return "qu'y a t-il " + self.direction + " ?"
+            elif (self.formulation == 3):
+                return "quelle est la figure " + self.direction + " ?"
             
         elif self.type == "couleur12" or self.type == 'couleur33' :
             if (self.formulation == 0):
-                return "De quelle couleur est la figure " + self.direction + " ?"
+                return "de quelle couleur est la figure " + self.direction + " ?"
             elif (self.formulation == 1):
-                return "Quelle est la couleur de la figure " + self.direction + " ?"
+                return "quelle est la couleur de la figure " + self.direction + " ?"
             elif (self.formulation == 2):
-                return "De quelle couleur est la figure " + self.direction + " ?"
+                return "la figure " + self.direction + " est de quelle couleur ?"
+            elif (self.formulation == 3):
+                return "donne moi la couleur de la figure " + self.direction + " ?"
 
     
         return None

@@ -52,23 +52,26 @@ class QuestionElement():
                 clr = " " + Data.ObjData["color"][self.color][genre + "P"]
             return shape + clr
         else :
-            num = "des"
-            #if self.count > 1 : 
-            shape = Data.ObjData["shape"][self.shape]["plural"]
-            if self.color != "":
-                clr = " " + Data.ObjData["color"][self.color][genre + "P"]
-                
-            #else :
-            #    shape = Data.ObjData["shape"][self.shape]["singul"]
-            #    if self.color != "":
-            #        clr = " " + Data.ObjData["color"][self.color][genre]
-            #    num = ""
+            
+            if self.count > 1 : 
+                shape = Data.ObjData["shape"][self.shape]["plural"]
+                if self.color != "":
+                    clr = " " + Data.ObjData["color"][self.color][genre + "P"]
+                num = "des"
+            else :
+                shape = Data.ObjData["shape"][self.shape]["singul"]
+                if self.color != "":
+                    clr = " " + Data.ObjData["color"][self.color][genre]
+                if genre == "M":
+                    num = "un"
+                else : 
+                    num = "une"
             return num + " " + shape + clr
 
     @staticmethod
     def randomElement() :
         """
-        -- randomElement()) : cgenerate a random question element
+        -- randomElement()) : generate a random question element
 
         Out << :
             QuestionElement : random generated element

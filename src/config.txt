@@ -1,6 +1,6 @@
-QAData=data3
+QAData=data7
 nDataTrain=20
 nDataTest=5
-nEpochs=80
-batchSize=64
+nEpochs=1
+batchSize=10
 imgDim=180

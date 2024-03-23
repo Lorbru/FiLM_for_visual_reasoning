@@ -1,6 +1,7 @@
 from Model.ModelTrain import ModelTrain
 from Model.ModelTest import ModelTest
-from Analysis import FiLMGeneratorPCA, Attention
+from Analysis import FiLMGeneratorPCA
+from DataGen.Vocab import BuildVocab
 import random
 import numpy as np
 from DataGen.DataGenerator import DataGenerator
@@ -20,14 +21,14 @@ def main():
     np.random.seed(SEED)
     print(f"  > Setting project SEED : {SEED}")
     
-    if os.path.isfile('src/Data/mod_best_data3.pth') == False :
-        print(f"  > Downloading mod_best_data3.pth from https://drive.google.com")
-        url = 'https://drive.google.com/file/d/13mYfOEcDRQ_yscapmz4Z3NaNL34qfTkh/view?usp=sharing'
-        output = 'src/Data/mod_best_data3.pth'
-        gdown.download(url, output, quiet=False, fuzzy=True)
+    # if os.path.isfile('src/Data/mod_best_data3.pth') == False :
+    #     print(f"  > Downloading mod_best_data3.pth from https://drive.google.com")
+    #     url = 'https://drive.google.com/file/d/13mYfOEcDRQ_yscapmz4Z3NaNL34qfTkh/view?usp=sharing'
+    #     output = 'src/Data/mod_best_data3.pth'
+    #     gdown.download(url, output, quiet=False, fuzzy=True)
 
-    ModelTrain(model_name="mod_best_data3")
-
+    ModelTrain()
+    
     print(f"\n===========            END PROCESS            ===========")
     
     return 0

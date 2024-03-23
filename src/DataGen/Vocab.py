@@ -29,7 +29,7 @@ class BuildVocab():
         """
         -- __init__() : constructor, loading the vocabulary
         """
-        with open(f'src/DataGen/Vocabulary/vocabulary.json', 'r') as f:
+        with open(f'src/DataGen/Vocabulary/vocabulary1.json', 'r') as f:
             self.vocab = json.load(f)
 
     def encode_sentence(self, sentence, check_words=False):
@@ -101,7 +101,7 @@ class BuildVocab():
                 words_list = words_list + gn.split()
 
         for type in Data.Qlist :
-            for i in range(3):
+            for i in range(4):
                 quest = str(Question(type=type, formulation=i))
                 quest = quest.replace("-", " ")
                 quest = quest.replace("'", " ")
@@ -112,7 +112,7 @@ class BuildVocab():
 
         dict = {word: i+1 for i, word in enumerate(ensemble)}
         
-        with open('src/DataGen/Vocabulary/vocabulary.json', 'w') as f:
+        with open('src/DataGen/Vocabulary/vocabulary1.json', 'w') as f:
             json.dump(dict, f)
         
         return

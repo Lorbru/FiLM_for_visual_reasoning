@@ -59,17 +59,17 @@
         },
 
         "ellipse": {
-            "genre": "F",
-            "singul":"ellipse",
-            "plural": "ellipses",
-            "indet": "d'ellipses"
+            "genre": "M",
+            "singul":"rond",
+            "plural": "ronds",
+            "indet": "de ronds"
         },
 
         "rectangle": {
             "genre": "M",
-            "singul":"rectangle",
-            "plural": "rectangles",
-            "indet": "de rectangles"
+            "singul":"carre",
+            "plural": "carres",
+            "indet": "de carres"
         }
 
     },
@@ -80,7 +80,5 @@
     "position12": ["a gauche", "a droite"],
 
     "qtypes": ["position12", "position33", "couleur12", "couleur33", "comptage", "presence"]
-
-
 
 }
