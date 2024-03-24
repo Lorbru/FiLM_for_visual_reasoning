@@ -1,6 +1,6 @@
 from Model.ModelTrain import ModelTrain
 from Model.ModelTest import ModelTest
-from Analysis import FiLMGeneratorPCA, Attention
+from Analysis import FiLMGeneratorPCA
 import random
 import numpy as np
 from DataGen.DataGenerator import DataGenerator
