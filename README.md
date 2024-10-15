@@ -1,16 +1,22 @@
-# Feature wise transformations : FiLM for visual reasoning
+# Feature-based transformations: FiLM for visual reasoning
 
-## Link :
+## References :
+
 - https://distill.pub/2018/feature-wise-transformations/
 - https://arxiv.org/pdf/1709.07871.pdf
 - https://github.com/ethanjperez/film
 
-## Project : 
+## Project: 
 
-This repository is a reproduction of FiLM architecture for neural network described in this paper : https://arxiv.org/pdf/1709.07871.pdf
+This is a reproduction of the FiLM architecture for conditional neural networks described in this article: https://arxiv.org/pdf/1709.07871.pdf.
+The aim is to build an architecture capable of making predictions $Y$ conditional on a main input $X$ and a given context on the data $Z$ by
+adding an affine transformation through a main chain of resNet blocks ($FiLM(X) = a(Z).X + b(Z)$ where $a(Z)$ and $b(Z)$ are outputs of a contextual neural network processor). 
+Basically, the architecture allows different data structures to be taken as input $X$ and context $Z$.
 
-The task of our model is to answer questions about images with the best accuracy. We use a data generator implemented in DataGen folder which create (question, answer, image) triplets for the training of our models : 
+We train the model on a visual reasoning response classification task (with a finite number of possible responses): we pass images as input and questions about the images in the context of a question.
+The data is generated artificially by a deterministic algorithm (DataGen class) to experiment with the architecture: 
+- The images are a set of 2D shapes in a 3*3 grid.
+- The questions are in French. We ask questions about position/color/presence.
+- The answers are a list of possible answers depending on the question: yes, no, red, ...
 
-- Images are a set of 2D shapes in a 3*3 grid
-- Questions are in french language speaking. We ask questions about position/color/presence.
-- Answers are a list of possible answers depending on the question : yes, no, red, ...
+
