@@ -1,4 +1,4 @@
-# Feature-based transformations: FiLM for visual reasoning
+# Feature-wise transformations: FiLM for visual reasoning
 
 ## References :
 
